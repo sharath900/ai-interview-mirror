@@ -13,7 +13,11 @@ from django.contrib.sites.models import Site
 site_id = int(os.environ.get("SITE_ID", "1"))
 domain = os.environ.get("RENDER_EXTERNAL_HOSTNAME", "ai-interview-mirror.onrender.com")
 
-Site.objects.update_or_create(
+# Remove duplicate site rows with same domain but wrong id
+Site.objects.filter(domain=domain).exclude(id=site_id).delete()
+
+# Create or update correct site row
+site, created = Site.objects.update_or_create(
     id=site_id,
     defaults={
         "domain": domain,
@@ -21,8 +25,9 @@ Site.objects.update_or_create(
     }
 )
 
-print("Site ready:", site_id, domain)
+print("Site ready:", site.id, site.domain)
 
+# Create/update Django admin user
 User = get_user_model()
 
 username = os.environ.get("DJANGO_SUPERUSER_USERNAME", "admin")
