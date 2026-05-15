@@ -113,7 +113,7 @@ WSGI_APPLICATION = 'interview_mirror.wsgi.application'
 
 DATABASES = {
     "default": dj_database_url.config(
-        default="postgres://postgres:sharath@localhost:5432/synapto_db",
+        default=f"postgres://postgres:{os.environ.get('LOCAL_DB_PASSWORD', '')}@localhost:5432/synapto_db",
         conn_max_age=600,
     )
 }
