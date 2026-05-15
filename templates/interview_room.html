@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Project Defense Room | AI Interview Mirror{% endblock title %}
+
+{% block body %}
+
+<style>
+    .page-wrap { padding: 32px 0 60px; }
+    .clean-card {
+        border: 0;
+        border-radius: 22px;
+        box-shadow: 0 12px 35px rgba(20, 30, 70, 0.08);
+        background: white;
+    }
+    .question-box {
+        background: #eefaf3;
+        border: 1px solid #d1f2df;
+        border-radius: 18px;
+        padding: 20px;
+    }
+</style>
+
+<div class="container page-wrap">
+    <div class="row justify-content-center">
+        <div class="col-lg-9">
+
+            <div class="card clean-card">
+                <div class="card-body p-4 p-md-5">
+
+                    <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-4">
+                        <div>
+                            <h2 class="fw-bold mb-1">Project Defense Room</h2>
+                            <p class="text-muted mb-0">
+                                Project: <strong>{{ session.project_title }}</strong>
+                            </p>
+                        </div>
+
+                        <span class="badge text-bg-success fs-6">
+                            {{ session.target_role }}
+                        </span>
+                    </div>
+
+                    <div class="question-box mb-4">
+                        <h5 class="fw-bold mb-2">
+                            <i class="bi bi-question-circle-fill text-success me-2"></i>
+                            Project Question
+                        </h5>
+                        <p class="mb-0 fs-5">
+                            {{ session.current_question }}
+                        </p>
+                    </div>
+
+                    <form method="POST">
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Your Answer</label>
+                            <textarea name="user_answer" class="form-control" rows="8"
+                                      placeholder="Explain your project clearly with technologies, flow, result, and your role..."
+                                      required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <i class="bi bi-send-fill me-1"></i>
+                            Submit Answer
+                        </button>
+
+                        <a href="{% url 'dashboard' %}" class="btn btn-outline-dark btn-lg">
+                            Dashboard
+                        </a>
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock body %}

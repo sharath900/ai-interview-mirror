@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Project Defense Room | AI Interview Mirror{% endblock title %}
+
+{% block body %}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-9">
+
+            <div class="card border-0 shadow-sm rounded-4 mb-4">
+                <div class="card-body p-4">
+                    <h3 class="fw-bold">Project Defense Room</h3>
+
+                    <p class="text-muted mb-1">
+                        Project: <strong>{{ session.project_title }}</strong>
+                    </p>
+
+                    <p class="text-muted mb-1">
+                        Technologies: <strong>{{ session.technologies }}</strong>
+                    </p>
+
+                    <p class="text-muted">
+                        Target Role: <strong>{{ session.target_role }}</strong>
+                    </p>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4">
+
+                    <h5 class="fw-bold mb-3">Project Defense Question</h5>
+
+                    <div class="alert alert-primary">
+                        {{ session.current_question }}
+                    </div>
+
+                    <form method="POST">
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            <label class="form-label">Your Answer</label>
+                            <textarea class="form-control" name="user_answer" rows="6"
+                                      placeholder="Type your answer here..." required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            Submit Answer
+                        </button>
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock body %}

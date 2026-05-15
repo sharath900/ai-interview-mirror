@@ -1,0 +1,375 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard | AI Interview Mirror{% endblock title %}
+
+{% block body %}
+
+<style>
+    .dashboard-page {
+        padding: 28px 0 60px 0;
+    }
+
+    .dash-card {
+        border: 0;
+        border-radius: 20px;
+        box-shadow: 0 10px 28px rgba(20, 30, 70, 0.08);
+        background: #ffffff;
+    }
+
+    .stat-card {
+        min-height: 150px;
+    }
+
+    .stat-icon {
+        width: 46px;
+        height: 46px;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 21px;
+        margin-bottom: 12px;
+    }
+
+    .icon-blue {
+        background: #eaf2ff;
+        color: #0d6efd;
+    }
+
+    .icon-green {
+        background: #eafaf1;
+        color: #198754;
+    }
+
+    .icon-purple {
+        background: #f1eaff;
+        color: #6f42c1;
+    }
+
+    .icon-orange {
+        background: #fff3df;
+        color: #fd7e14;
+    }
+
+    .weakness-pill {
+        display: inline-block;
+        background: #fff3cd;
+        color: #7a5a00;
+        border-radius: 30px;
+        padding: 6px 12px;
+        font-size: 13px;
+        margin: 4px;
+    }
+
+    .activity-list {
+        max-height: 520px;
+        overflow-y: auto;
+        padding-right: 5px;
+    }
+
+    .activity-item {
+        border: 1px solid #edf0f5;
+        border-radius: 16px;
+        padding: 14px;
+        margin-bottom: 12px;
+        background: #ffffff;
+    }
+
+    .quick-btn {
+        text-align: left;
+        padding: 11px 14px;
+        border-radius: 12px;
+        font-weight: 500;
+    }
+</style>
+
+<div class="container dashboard-page">
+
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">My Dashboard</h2>
+            <p class="text-muted mb-0">
+                Track your interviews, project defense practice, scores, and weak areas.
+            </p>
+        </div>
+
+        <div class="d-flex gap-2 flex-wrap">
+            <a href="{% url 'start_interview' %}" class="btn btn-primary">
+                <i class="bi bi-mic-fill me-1"></i>
+                Start Interview
+            </a>
+
+            <a href="{% url 'improvement_plan' %}" class="btn btn-outline-dark">
+                <i class="bi bi-lightning-charge-fill me-1"></i>
+                Improvement Plan
+            </a>
+        </div>
+    </div>
+
+
+    <!-- Stats Row -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-md-6 col-lg-3">
+            <div class="card dash-card stat-card">
+                <div class="card-body p-4">
+                    <div class="stat-icon icon-blue">
+                        <i class="bi bi-mic-fill"></i>
+                    </div>
+
+                    <p class="text-muted mb-1">Mock Interviews</p>
+                    <h2 class="fw-bold mb-0">{{ total_interviews }}</h2>
+                    <small class="text-muted">{{ total_interview_answers }} answers submitted</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+            <div class="card dash-card stat-card">
+                <div class="card-body p-4">
+                    <div class="stat-icon icon-green">
+                        <i class="bi bi-kanban-fill"></i>
+                    </div>
+
+                    <p class="text-muted mb-1">Project Defense</p>
+                    <h2 class="fw-bold mb-0">{{ total_project_sessions }}</h2>
+                    <small class="text-muted">{{ total_project_answers }} answers submitted</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+            <div class="card dash-card stat-card">
+                <div class="card-body p-4">
+                    <div class="stat-icon icon-purple">
+                        <i class="bi bi-graph-up-arrow"></i>
+                    </div>
+
+                    <p class="text-muted mb-1">Interview Average</p>
+                    <h2 class="fw-bold mb-0">{{ average_interview_score }}/10</h2>
+                    <small class="text-muted">Mock interview score</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+            <div class="card dash-card stat-card">
+                <div class="card-body p-4">
+                    <div class="stat-icon icon-orange">
+                        <i class="bi bi-bar-chart-fill"></i>
+                    </div>
+
+                    <p class="text-muted mb-1">Project Average</p>
+                    <h2 class="fw-bold mb-0">{{ average_project_score }}/10</h2>
+                    <small class="text-muted">Project defense score</small>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Main Dashboard Content -->
+    <div class="row g-4 align-items-start">
+
+        <!-- Left Column -->
+        <div class="col-lg-4">
+
+            <!-- Weak Areas -->
+            <div class="card dash-card mb-4">
+                <div class="card-body p-4">
+
+                    <h4 class="fw-bold mb-3">
+                        <i class="bi bi-bullseye text-warning me-2"></i>
+                        Common Weak Areas
+                    </h4>
+
+                    {% if common_weaknesses %}
+                        {% for weakness, count in common_weaknesses %}
+                            <span class="weakness-pill">
+                                {{ weakness }} × {{ count }}
+                            </span>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted mb-0">
+                            No weak areas found yet. Practice interviews to generate insights.
+                        </p>
+                    {% endif %}
+
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card dash-card">
+                <div class="card-body p-4">
+
+                    <h4 class="fw-bold mb-3">
+                        <i class="bi bi-lightning-charge-fill text-primary me-2"></i>
+                        Quick Actions
+                    </h4>
+
+                    <div class="d-grid gap-2">
+
+                        <a href="{% url 'resume_analyzer' %}" class="btn btn-outline-primary quick-btn">
+                            <i class="bi bi-file-earmark-person-fill me-2"></i>
+                            Resume Analyzer
+                        </a>
+
+                        <a href="{% url 'project_defense' %}" class="btn btn-outline-success quick-btn">
+                            <i class="bi bi-kanban-fill me-2"></i>
+                            Project Defense
+                        </a>
+
+                        <a href="{% url 'resume_history' %}" class="btn btn-outline-dark quick-btn">
+                            <i class="bi bi-file-earmark-text-fill me-2"></i>
+                            Resume History
+                        </a>
+
+                        <a href="{% url 'privacy_center' %}" class="btn btn-outline-danger quick-btn">
+                            <i class="bi bi-shield-lock-fill me-2"></i>
+                            Privacy Center
+                        </a>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- Right Column -->
+        <div class="col-lg-8">
+
+            <!-- Recent Mock Interview Activity -->
+            <div class="card dash-card mb-4">
+                <div class="card-body p-4">
+
+                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                        <h4 class="fw-bold mb-0">
+                            <i class="bi bi-clock-history text-primary me-2"></i>
+                            Recent Mock Interview Activity
+                        </h4>
+
+                        <a href="{% url 'interview_history' %}" class="btn btn-sm btn-outline-primary">
+                            View All
+                        </a>
+                    </div>
+
+                    <div class="activity-list">
+
+                        {% if interview_answers %}
+                            {% for answer in interview_answers|slice:":5" %}
+                                <div class="activity-item">
+
+                                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
+                                        <strong>{{ answer.session.role }}</strong>
+                                        <span class="badge text-bg-primary">{{ answer.score }}/10</span>
+                                    </div>
+
+                                    <p class="text-muted small mb-2">
+                                        {{ answer.created_at|date:"d M Y, h:i A" }}
+                                    </p>
+
+                                    <p class="mb-2">
+                                        <strong>Question:</strong>
+                                        {{ answer.question|truncatewords:22 }}
+                                    </p>
+
+                                    <p class="text-muted mb-2">
+                                        <strong>Weak Areas:</strong>
+                                        {% if answer.weakness_tags %}
+                                            {{ answer.weakness_tags }}
+                                        {% else %}
+                                            Not available
+                                        {% endif %}
+                                    </p>
+
+                                    <a href="{% url 'feedback' answer.id %}" class="btn btn-sm btn-outline-dark">
+                                        View Feedback
+                                    </a>
+
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="text-center py-4">
+                                <i class="bi bi-mic-fill fs-1 text-muted"></i>
+                                <h5 class="fw-bold mt-3">No mock interview activity yet</h5>
+                                <p class="text-muted">
+                                    Start an interview to see your scores and feedback here.
+                                </p>
+                                <a href="{% url 'start_interview' %}" class="btn btn-primary">
+                                    Start Interview
+                                </a>
+                            </div>
+                        {% endif %}
+
+                    </div>
+
+                </div>
+            </div>
+
+
+            <!-- Recent Project Defense Activity -->
+            <div class="card dash-card">
+                <div class="card-body p-4">
+
+                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                        <h4 class="fw-bold mb-0">
+                            <i class="bi bi-kanban-fill text-success me-2"></i>
+                            Recent Project Defense Activity
+                        </h4>
+
+                        <a href="{% url 'project_history' %}" class="btn btn-sm btn-outline-success">
+                            View All
+                        </a>
+                    </div>
+
+                    {% if project_answers %}
+                        {% for answer in project_answers|slice:":4" %}
+                            <div class="activity-item">
+
+                                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
+                                    <strong>{{ answer.session.project_title }}</strong>
+                                    <span class="badge text-bg-success">{{ answer.score }}/10</span>
+                                </div>
+
+                                <p class="text-muted small mb-2">
+                                    {{ answer.created_at|date:"d M Y, h:i A" }}
+                                </p>
+
+                                <p class="mb-2">
+                                    <strong>Question:</strong>
+                                    {{ answer.question|truncatewords:22 }}
+                                </p>
+
+                                <a href="{% url 'project_defense_feedback' answer.id %}" class="btn btn-sm btn-outline-dark">
+                                    View Feedback
+                                </a>
+
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="bi bi-kanban-fill fs-1 text-muted"></i>
+                            <h5 class="fw-bold mt-3">No project defense activity yet</h5>
+                            <p class="text-muted">
+                                Start project defense practice to see feedback here.
+                            </p>
+                            <a href="{% url 'project_defense' %}" class="btn btn-success">
+                                Start Project Defense
+                            </a>
+                        </div>
+                    {% endif %}
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock body %}

@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}Improvement Plan | AI Interview Mirror{% endblock title %}
+
+{% block body %}
+
+<style>
+    .page-wrap { padding: 32px 0 60px; }
+    .clean-card {
+        border: 0;
+        border-radius: 22px;
+        box-shadow: 0 12px 35px rgba(20, 30, 70, 0.08);
+        background: white;
+    }
+    .plan-box {
+        background: #f8fafc;
+        border: 1px solid #edf0f5;
+        border-radius: 18px;
+        padding: 20px;
+    }
+    .weakness-pill {
+        display: inline-block;
+        background: #fff3cd;
+        color: #7a5a00;
+        border-radius: 30px;
+        padding: 6px 12px;
+        font-size: 13px;
+        margin: 4px;
+    }
+</style>
+
+<div class="container page-wrap">
+
+    <div class="row g-4">
+
+        <div class="col-lg-4">
+            <div class="card clean-card h-100">
+                <div class="card-body p-4">
+
+                    <h2 class="fw-bold mb-2">
+                        <i class="bi bi-lightning-charge-fill text-primary me-2"></i>
+                        Improvement Plan
+                    </h2>
+
+                    <p class="text-muted">
+                        Personalized plan based on your weak areas and average score.
+                    </p>
+
+                    <div class="plan-box text-center mb-4">
+                        <p class="text-muted mb-1">Overall Average Score</p>
+                        <h1 class="fw-bold mb-0">{{ average_score }}/10</h1>
+                    </div>
+
+                    <h5 class="fw-bold">Common Weaknesses</h5>
+
+                    {% if common_weaknesses %}
+                        {% for weakness, count in common_weaknesses %}
+                            <span class="weakness-pill">{{ weakness }} × {{ count }}</span>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted">No weak areas yet.</p>
+                    {% endif %}
+
+                    <div class="d-grid gap-2 mt-4">
+                        <a href="{% url 'start_interview' %}" class="btn btn-primary">
+                            Practice Interview
+                        </a>
+
+                        <a href="{% url 'project_defense' %}" class="btn btn-outline-success">
+                            Practice Project Defense
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="card clean-card">
+                <div class="card-body p-4">
+
+                    <h4 class="fw-bold mb-3">
+                        <i class="bi bi-robot text-primary me-2"></i>
+                        AI Generated Plan
+                    </h4>
+
+                    <div class="plan-box">
+                        {{ plan|linebreaks }}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock body %}

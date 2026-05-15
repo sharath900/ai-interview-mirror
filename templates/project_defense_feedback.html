@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}Project Defense Feedback | AI Interview Mirror{% endblock title %}
+
+{% block body %}
+
+<style>
+    .page-wrap { padding: 32px 0 60px; }
+    .clean-card {
+        border: 0;
+        border-radius: 22px;
+        box-shadow: 0 12px 35px rgba(20, 30, 70, 0.08);
+        background: white;
+    }
+    .score-circle {
+        width: 110px;
+        height: 110px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #198754, #0d6efd);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 30px;
+        font-weight: 800;
+    }
+    .info-box {
+        background: #f8fafc;
+        border: 1px solid #edf0f5;
+        border-radius: 18px;
+        padding: 18px;
+    }
+</style>
+
+<div class="container page-wrap">
+
+    <div class="row g-4">
+
+        <div class="col-lg-4">
+            <div class="card clean-card h-100">
+                <div class="card-body p-4 text-center">
+
+                    <div class="score-circle mx-auto mb-3">
+                        {{ answer.score }}/10
+                    </div>
+
+                    <h3 class="fw-bold">Project Score</h3>
+                    <p class="text-muted">
+                        AI score based on project clarity, technical depth, architecture, and confidence.
+                    </p>
+
+                    <div class="d-grid gap-2 mt-4">
+                        <a href="{% url 'project_defense_room' answer.session.id %}" class="btn btn-success">
+                            Next Question
+                        </a>
+
+                        <a href="{% url 'project_history' %}" class="btn btn-outline-dark">
+                            Project History
+                        </a>
+
+                        <a href="{% url 'dashboard' %}" class="btn btn-outline-success">
+                            Dashboard
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+
+            <div class="card clean-card mb-4">
+                <div class="card-body p-4">
+                    <h4 class="fw-bold mb-3">Question</h4>
+                    <div class="info-box">{{ answer.question }}</div>
+                </div>
+            </div>
+
+            <div class="card clean-card mb-4">
+                <div class="card-body p-4">
+                    <h4 class="fw-bold mb-3">Your Answer</h4>
+                    <div class="info-box">{{ answer.user_answer|linebreaks }}</div>
+                </div>
+            </div>
+
+            <div class="card clean-card mb-4">
+                <div class="card-body p-4">
+                    <h4 class="fw-bold mb-3">AI Feedback</h4>
+                    <div class="info-box">{{ answer.ai_feedback|linebreaks }}</div>
+                </div>
+            </div>
+
+            <div class="card clean-card mb-4">
+                <div class="card-body p-4">
+                    <h4 class="fw-bold mb-3">Weak Areas</h4>
+                    <div class="info-box">
+                        {% if answer.weakness_tags %}
+                            {{ answer.weakness_tags }}
+                        {% else %}
+                            Not available
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="card clean-card">
+                <div class="card-body p-4">
+                    <h4 class="fw-bold mb-3">Better Answer</h4>
+                    <div class="info-box">{{ answer.better_answer|linebreaks }}</div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock body %}

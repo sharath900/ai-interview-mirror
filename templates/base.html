@@ -1,0 +1,824 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}SYNAPTO | Learning & Placement{% endblock title %}</title>
+
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+    <style>
+        :root {
+            --syn-dark: #0f172a;
+            --syn-dark-2: #111827;
+            --syn-blue: #2563eb;
+            --syn-purple: #6d5dfc;
+            --syn-bg: #f6f8fb;
+            --syn-text: #111827;
+            --syn-muted: #667085;
+            --syn-card: #ffffff;
+            --syn-border: #e7ecf3;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--syn-bg);
+            color: var(--syn-text);
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        /* =========================
+           TOP NAVBAR
+        ========================== */
+        .top-navbar {
+            background: rgba(15, 23, 42, 0.98);
+            min-height: 68px;
+            z-index: 1040;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(14px);
+        }
+
+        .navbar-inner {
+            gap: 14px;
+        }
+
+        .menu-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            transition: 0.2s ease;
+        }
+
+        .menu-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+        }
+
+        .brand-wordmark {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            white-space: nowrap;
+        }
+
+        .brand-symbol {
+            font-weight: 950;
+            font-size: 29px;
+            line-height: 1;
+            letter-spacing: -3px;
+            background: linear-gradient(135deg, #ffffff, #d99a18);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-main {
+            color: #ffffff;
+            font-weight: 950;
+            font-size: 22px;
+            letter-spacing: 0.8px;
+            line-height: 1;
+        }
+
+        .brand-tag {
+            color: rgba(255, 255, 255, 0.62);
+            font-size: 10px;
+            letter-spacing: 1.8px;
+            margin-top: 4px;
+            font-weight: 600;
+        }
+
+        .nav-search {
+            max-width: 440px;
+            width: 100%;
+        }
+
+        .nav-search .form-control {
+            height: 43px;
+            border: none;
+            border-radius: 999px 0 0 999px;
+            padding-left: 18px;
+            box-shadow: none;
+            background: #ffffff;
+        }
+
+        .nav-search .btn {
+            height: 43px;
+            border-radius: 0 999px 999px 0;
+            padding-left: 20px;
+            padding-right: 20px;
+            background: var(--syn-blue);
+            border-color: var(--syn-blue);
+        }
+
+        .top-navbar .nav-link {
+            color: rgba(255, 255, 255, 0.78);
+            font-weight: 700;
+            font-size: 14px;
+            padding: 9px 10px;
+            border-radius: 12px;
+            transition: 0.2s ease;
+        }
+
+        .top-navbar .nav-link:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .nav-user-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            padding: 7px 13px 7px 8px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.11);
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 750;
+            white-space: nowrap;
+            transition: 0.2s ease;
+        }
+
+        .nav-user-pill:hover {
+            background: rgba(255, 255, 255, 0.18);
+            color: #ffffff;
+        }
+
+        .nav-user-img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.45);
+            background: #ffffff;
+            flex-shrink: 0;
+        }
+
+        .nav-user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--syn-blue), var(--syn-purple));
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 950;
+            border: 2px solid rgba(255, 255, 255, 0.35);
+            flex-shrink: 0;
+        }
+
+        .nav-user-name {
+            max-width: 135px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .logout-btn {
+            border-radius: 13px;
+            font-weight: 750;
+            padding: 8px 13px;
+        }
+
+        /* =========================
+           OFFCANVAS DRAWER
+        ========================== */
+        .synapto-offcanvas {
+            background: linear-gradient(180deg, #0f172a, #111827);
+            color: #ffffff;
+            width: 310px !important;
+        }
+
+        .synapto-offcanvas .offcanvas-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+            padding: 20px;
+        }
+
+        .synapto-offcanvas .btn-close {
+            filter: invert(1);
+            opacity: 0.8;
+        }
+
+        .drawer-title {
+            font-size: 12px;
+            font-weight: 850;
+            color: rgba(255, 255, 255, 0.45);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin: 18px 6px 10px;
+        }
+
+        .drawer-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            border-radius: 15px;
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.78);
+            font-weight: 700;
+            margin-bottom: 7px;
+            transition: 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .drawer-link:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            border-color: rgba(255, 255, 255, 0.10);
+            transform: translateX(2px);
+        }
+
+        .drawer-link i {
+            font-size: 18px;
+            width: 22px;
+            text-align: center;
+        }
+
+        .drawer-link.primary {
+            background: linear-gradient(135deg, var(--syn-blue), var(--syn-purple));
+            color: #ffffff;
+            box-shadow: 0 12px 28px rgba(37, 99, 235, 0.28);
+        }
+
+        .soon-badge {
+            margin-left: auto;
+            font-size: 10px;
+            background: rgba(255, 193, 7, 0.16);
+            color: #ffc107;
+            padding: 3px 8px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 193, 7, 0.25);
+        }
+
+        .drawer-note {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            border-radius: 18px;
+            padding: 14px;
+            margin-top: 18px;
+            color: rgba(255, 255, 255, 0.78);
+        }
+
+        .drawer-note h6 {
+            color: #ffffff;
+            font-weight: 850;
+        }
+
+        .drawer-note p {
+            color: rgba(255, 255, 255, 0.62);
+            line-height: 1.6;
+        }
+
+        /* =========================
+           CONTENT
+        ========================== */
+        .content-full {
+            min-height: calc(100vh - 68px);
+        }
+
+        .page-messages {
+            max-width: 1140px;
+            margin: 0 auto;
+        }
+
+        /* =========================
+           DROPDOWN
+        ========================== */
+        .dropdown-menu {
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.12);
+            padding: 10px;
+        }
+
+        .dropdown-item {
+            border-radius: 10px;
+            padding: 9px 12px;
+            font-weight: 600;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f1f5ff;
+            color: var(--syn-blue);
+        }
+
+        /* =========================
+           FOOTER
+        ========================== */
+        .site-footer {
+            background: #0f172a;
+            color: #ffffff;
+            margin-top: 60px;
+            padding: 42px 0 18px;
+        }
+
+        .site-footer a:hover {
+            opacity: 1 !important;
+            text-decoration: underline !important;
+        }
+
+        .footer-text {
+            color: rgba(255, 255, 255, 0.68);
+            line-height: 1.7;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================== */
+        @media (max-width: 1199px) {
+            .nav-search {
+                max-width: 310px;
+            }
+
+            .top-text-link {
+                display: none;
+            }
+
+            .nav-user-name {
+                max-width: 105px;
+            }
+        }
+
+        @media (max-width: 991px) {
+            .top-navbar {
+                min-height: auto;
+            }
+
+            .nav-search {
+                max-width: 100%;
+                margin: 12px 0;
+            }
+
+            .brand-main {
+                font-size: 20px;
+            }
+
+            .brand-tag {
+                display: none;
+            }
+
+            .nav-user-pill {
+                margin-top: 8px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .synapto-offcanvas {
+                width: 285px !important;
+            }
+
+            .container-fluid.px-4 {
+                padding-left: 14px !important;
+                padding-right: 14px !important;
+            }
+
+            .brand-symbol {
+                font-size: 27px;
+            }
+
+            .brand-main {
+                font-size: 18px;
+            }
+
+            .menu-btn {
+                width: 39px;
+                height: 39px;
+                border-radius: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- Top Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark top-navbar shadow-sm sticky-top">
+    <div class="container-fluid px-4 navbar-inner">
+
+        {% if user.is_authenticated %}
+            <button class="menu-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#synaptoMenu" aria-controls="synaptoMenu">
+                <i class="bi bi-list"></i>
+            </button>
+        {% endif %}
+
+        <a class="navbar-brand brand-wordmark" href="{% url 'home' %}">
+            <div class="brand-symbol">SA</div>
+            <div>
+                <div class="brand-main">SYNAPTO</div>
+                <div class="brand-tag">LEARNING & PLACEMENT</div>
+            </div>
+        </a>
+
+        <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainNavbar">
+
+            <form class="d-flex nav-search mx-lg-4 my-3 my-lg-0" role="search" method="GET" action="#">
+                <input class="form-control" type="search"
+                       name="q"
+                       placeholder="Search topics, DSA, subjects..."
+                       aria-label="Search">
+
+                <button class="btn btn-primary" type="submit">
+                    <i class="bi bi-search"></i>
+                </button>
+            </form>
+
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center gap-lg-1">
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home' %}">
+                        <i class="bi bi-house-door-fill me-1"></i>
+                        <span class="top-text-link">Home</span>
+                    </a>
+                </li>
+
+                {% if user.is_authenticated %}
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'dashboard' %}">
+                            <i class="bi bi-grid-1x2-fill me-1"></i>
+                            <span class="top-text-link">Dashboard</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'resume_analyzer' %}">
+                            <i class="bi bi-file-earmark-person-fill me-1"></i>
+                            <span class="top-text-link">Resume</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'start_interview' %}">
+                            <i class="bi bi-mic-fill me-1"></i>
+                            <span class="top-text-link">Interview</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'project_defense' %}">
+                            <i class="bi bi-kanban-fill me-1"></i>
+                            <span class="top-text-link">Project</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-clock-history me-1"></i>
+                            <span class="top-text-link">History</span>
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item" href="{% url 'resume_history' %}">
+                                    <i class="bi bi-file-earmark-text-fill me-2"></i>
+                                    Resume History
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item" href="{% url 'interview_history' %}">
+                                    <i class="bi bi-clock-history me-2"></i>
+                                    Interview History
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item" href="{% url 'project_history' %}">
+                                    <i class="bi bi-folder-check me-2"></i>
+                                    Project History
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item ms-lg-2">
+                        <a href="{% url 'profile' %}" class="nav-user-pill">
+
+                            {% for account in user.socialaccount_set.all %}
+                                {% if account.provider == "google" and account.extra_data.picture %}
+                                    <img src="{{ account.extra_data.picture }}" class="nav-user-img" alt="Profile">
+                                {% endif %}
+                            {% empty %}
+                                <span class="nav-user-avatar">
+                                    {{ user.username|slice:":1"|upper }}
+                                </span>
+                            {% endfor %}
+
+                            <span class="nav-user-name">
+                                Hi,
+                                {% if user.first_name %}
+                                    {{ user.first_name }}
+                                {% else %}
+                                    {{ user.username }}
+                                {% endif %}
+                            </span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item ms-lg-1">
+                        <a class="btn btn-outline-light btn-sm logout-btn" href="{% url 'logout' %}">
+                            <i class="bi bi-box-arrow-right me-1"></i>
+                            Logout
+                        </a>
+                    </li>
+
+                {% else %}
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'help' %}">
+                            <i class="bi bi-question-circle-fill me-1"></i>
+                            Help
+                        </a>
+                    </li>
+
+                    <li class="nav-item ms-lg-2">
+                        <a class="btn btn-outline-light btn-sm px-3 logout-btn" href="{% url 'login' %}">
+                            Login
+                        </a>
+                    </li>
+
+                    <li class="nav-item ms-lg-2">
+                        <a class="btn btn-primary btn-sm px-3 logout-btn" href="{% url 'register' %}">
+                            Register
+                        </a>
+                    </li>
+
+                {% endif %}
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+{% if user.is_authenticated %}
+<!-- Three-line menu drawer -->
+<div class="offcanvas offcanvas-start synapto-offcanvas" tabindex="-1" id="synaptoMenu" aria-labelledby="synaptoMenuLabel">
+
+    <div class="offcanvas-header">
+        <a class="brand-wordmark" href="{% url 'home' %}">
+            <div class="brand-symbol">SA</div>
+            <div>
+                <div class="brand-main">SYNAPTO</div>
+                <div class="brand-tag">LEARNING & PLACEMENT</div>
+            </div>
+        </a>
+
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+
+    <div class="offcanvas-body">
+
+        <div class="drawer-title">Main</div>
+
+        <a href="{% url 'dashboard' %}" class="drawer-link primary">
+            <i class="bi bi-grid-1x2-fill"></i>
+            Dashboard
+        </a>
+
+        <a href="{% url 'resume_analyzer' %}" class="drawer-link">
+            <i class="bi bi-file-earmark-person-fill"></i>
+            Resume Analyzer
+        </a>
+
+        <a href="{% url 'start_interview' %}" class="drawer-link">
+            <i class="bi bi-mic-fill"></i>
+            Mock Interview
+        </a>
+
+        <a href="{% url 'project_defense' %}" class="drawer-link">
+            <i class="bi bi-kanban-fill"></i>
+            Project Defense
+        </a>
+
+        <a href="{% url 'improvement_plan' %}" class="drawer-link">
+            <i class="bi bi-lightning-charge-fill"></i>
+            Improvement Plan
+        </a>
+
+        <div class="drawer-title">Learning Modules</div>
+
+        <a href="#" class="drawer-link">
+            <i class="bi bi-book-fill"></i>
+            Semester Prep
+            <span class="soon-badge">Soon</span>
+        </a>
+
+        <a href="#" class="drawer-link">
+            <i class="bi bi-code-slash"></i>
+            DSA Practice
+            <span class="soon-badge">Soon</span>
+        </a>
+
+        <a href="#" class="drawer-link">
+            <i class="bi bi-terminal-fill"></i>
+            Python Practice
+            <span class="soon-badge">Soon</span>
+        </a>
+
+        <div class="drawer-title">History</div>
+
+        <a href="{% url 'resume_history' %}" class="drawer-link">
+            <i class="bi bi-file-earmark-text-fill"></i>
+            Resume History
+        </a>
+
+        <a href="{% url 'interview_history' %}" class="drawer-link">
+            <i class="bi bi-clock-history"></i>
+            Interview History
+        </a>
+
+        <a href="{% url 'project_history' %}" class="drawer-link">
+            <i class="bi bi-folder-check"></i>
+            Project History
+        </a>
+
+        <div class="drawer-title">Account</div>
+
+        <a href="{% url 'profile' %}" class="drawer-link">
+            <i class="bi bi-person-circle"></i>
+            Profile
+        </a>
+
+        <a href="{% url 'privacy_center' %}" class="drawer-link">
+            <i class="bi bi-shield-lock-fill"></i>
+            Privacy Center
+        </a>
+
+        <a href="{% url 'help' %}" class="drawer-link">
+            <i class="bi bi-question-circle-fill"></i>
+            Help
+        </a>
+
+        <a href="{% url 'logout' %}" class="drawer-link">
+            <i class="bi bi-box-arrow-right"></i>
+            Logout
+        </a>
+
+        <div class="drawer-note">
+            <h6 class="mb-1">Next Expansion</h6>
+            <p class="small mb-0">
+                Semester topics, DSA practice, and Python compiler will be added step by step after this version is stable.
+            </p>
+        </div>
+
+    </div>
+</div>
+{% endif %}
+
+
+<!-- Django messages -->
+{% if messages %}
+<div class="content-full">
+    <div class="container page-messages mt-3">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+
+<!-- Main content -->
+<main class="content-full">
+    {% block body %}
+    {% endblock body %}
+</main>
+
+
+<!-- Footer -->
+<footer class="site-footer">
+    <div class="container">
+
+        <div class="row g-4">
+
+            <div class="col-lg-5">
+                <a class="brand-wordmark mb-3" href="{% url 'home' %}">
+                    <div class="brand-symbol">SA</div>
+                    <div>
+                        <div class="brand-main">SYNAPTO</div>
+                        <div class="brand-tag">LEARNING & PLACEMENT</div>
+                    </div>
+                </a>
+
+                <p class="footer-text mt-3">
+                    SYNAPTO helps engineering students prepare for resumes, interviews,
+                    project defense, learning modules, and placement readiness in one platform.
+                </p>
+
+                <p class="footer-text mb-0">
+                    Created by <strong>Sharathkumar</strong>.
+                </p>
+            </div>
+
+            <div class="col-lg-3">
+                <h6 class="fw-bold">Platform</h6>
+
+                <ul class="list-unstyled">
+
+                    <li class="mb-2">
+                        <a href="{% url 'home' %}" class="text-light text-decoration-none opacity-75">
+                            Home
+                        </a>
+                    </li>
+
+                    {% if user.is_authenticated %}
+                        <li class="mb-2">
+                            <a href="{% url 'dashboard' %}" class="text-light text-decoration-none opacity-75">
+                                Dashboard
+                            </a>
+                        </li>
+
+                        <li class="mb-2">
+                            <a href="{% url 'resume_analyzer' %}" class="text-light text-decoration-none opacity-75">
+                                Resume Analyzer
+                            </a>
+                        </li>
+
+                        <li class="mb-2">
+                            <a href="{% url 'start_interview' %}" class="text-light text-decoration-none opacity-75">
+                                Mock Interview
+                            </a>
+                        </li>
+
+                        <li class="mb-2">
+                            <a href="{% url 'project_defense' %}" class="text-light text-decoration-none opacity-75">
+                                Project Defense
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    <li class="mb-2">
+                        <a href="{% url 'help' %}" class="text-light text-decoration-none opacity-75">
+                            Help
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+
+            <div class="col-lg-4">
+                <h6 class="fw-bold">Privacy Note</h6>
+
+                <p class="footer-text">
+                    Resume files may contain personal details. Upload your resume only if you are comfortable.
+                    Logged-in users can delete saved interview, project-defense, and resume data anytime.
+                </p>
+
+                {% if user.is_authenticated %}
+                    <a href="{% url 'privacy_center' %}" class="btn btn-outline-light btn-sm logout-btn">
+                        <i class="bi bi-shield-lock-fill me-1"></i>
+                        Open Privacy Center
+                    </a>
+                {% else %}
+                    <a href="{% url 'register' %}" class="btn btn-outline-light btn-sm logout-btn">
+                        Create Account
+                    </a>
+                {% endif %}
+            </div>
+
+        </div>
+
+        <hr class="border-secondary mt-4">
+
+        <div class="text-center footer-text">
+            <small>
+                © 2026 SYNAPTO by Sharathkumar. Built for student learning and placement preparation.
+            </small>
+        </div>
+
+    </div>
+</footer>
+
+
+<!-- Bootstrap 5.3 JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

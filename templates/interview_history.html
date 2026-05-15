@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}Interview History | AI Interview Mirror{% endblock title %}
+
+{% block body %}
+
+<style>
+    .history-wrap {
+        padding: 32px 0 60px;
+    }
+
+    .history-card {
+        border: 0;
+        border-radius: 22px;
+        box-shadow: 0 12px 35px rgba(20, 30, 70, 0.08);
+        background: white;
+    }
+
+    .history-item {
+        border: 1px solid #edf0f5;
+        border-radius: 18px;
+        padding: 16px;
+        margin-bottom: 14px;
+        background: white;
+    }
+</style>
+
+<div class="container history-wrap">
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Interview History</h2>
+            <p class="text-muted mb-0">
+                Review your previous mock interview answers, scores, weak areas, and feedback.
+            </p>
+        </div>
+
+        <a href="{% url 'start_interview' %}" class="btn btn-primary">
+            Start New Interview
+        </a>
+    </div>
+
+    {% if answers %}
+
+        <div class="card history-card">
+            <div class="card-body p-4">
+
+                {% for answer in answers %}
+                    <div class="history-item">
+
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
+                            <div>
+                                <h5 class="fw-bold mb-1">{{ answer.session.role }}</h5>
+                                <p class="text-muted small mb-0">{{ answer.created_at|date:"d M Y, h:i A" }}</p>
+                            </div>
+
+                            <span class="badge text-bg-primary fs-6">{{ answer.score }}/10</span>
+                        </div>
+
+                        <p class="mb-2">
+                            <strong>Question:</strong> {{ answer.question|truncatewords:28 }}
+                        </p>
+
+                        <p class="mb-2">
+                            <strong>Your Answer:</strong> {{ answer.user_answer|truncatewords:35 }}
+                        </p>
+
+                        <p class="text-muted mb-3">
+                            <strong>Weak Areas:</strong>
+                            {% if answer.weakness_tags %}
+                                {{ answer.weakness_tags }}
+                            {% else %}
+                                Not available
+                            {% endif %}
+                        </p>
+
+                        <div class="d-flex flex-wrap gap-2">
+                            <a href="{% url 'feedback' answer.id %}" class="btn btn-outline-primary btn-sm">
+                                View Feedback
+                            </a>
+
+                            <form method="POST" action="{% url 'delete_interview_answer' answer.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-danger btn-sm"
+                                        onclick="return confirm('Delete this interview answer?');">
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
+
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+
+    {% else %}
+
+        <div class="card history-card">
+            <div class="card-body p-5 text-center">
+                <i class="bi bi-mic-fill fs-1 text-muted"></i>
+                <h4 class="fw-bold mt-3">No Interview History Yet</h4>
+                <p class="text-muted">
+                    Start your first mock interview. Your feedback will appear here.
+                </p>
+                <a href="{% url 'start_interview' %}" class="btn btn-primary">
+                    Start Interview
+                </a>
+            </div>
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock body %}

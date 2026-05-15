@@ -1,0 +1,522 @@
+{% extends "base.html" %}
+
+{% block title %}Login | SYNAPTO{% endblock title %}
+
+{% block body %}
+
+<style>
+    .login-page {
+        padding: 34px 24px 70px;
+    }
+
+    .login-shell {
+        max-width: 1120px;
+        margin: 0 auto;
+        background: #ffffff;
+        border-radius: 30px;
+        overflow: hidden;
+        box-shadow: 0 24px 60px rgba(15, 23, 42, 0.12);
+    }
+
+    .login-left {
+        background:
+            radial-gradient(circle at 20% 20%, rgba(13, 110, 253, 0.20), transparent 30%),
+            radial-gradient(circle at 80% 15%, rgba(111, 66, 193, 0.22), transparent 35%),
+            linear-gradient(135deg, #0f172a, #1e1b4b);
+        color: white;
+        min-height: 640px;
+        padding: 46px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .login-left::after {
+        content: "";
+        position: absolute;
+        width: 360px;
+        height: 360px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.08);
+        right: -110px;
+        bottom: -110px;
+    }
+
+    .brand-box {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .brand-symbol {
+        font-weight: 900;
+        font-size: 34px;
+        line-height: 1;
+        letter-spacing: -3px;
+        background: linear-gradient(135deg, #ffffff, #d99a18);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .brand-name {
+        font-weight: 950;
+        letter-spacing: 1px;
+        font-size: 25px;
+        line-height: 1;
+    }
+
+    .brand-tag {
+        color: rgba(255, 255, 255, 0.65);
+        font-size: 11px;
+        letter-spacing: 1.8px;
+        margin-top: 4px;
+        font-weight: 600;
+    }
+
+    .login-hero-text {
+        position: relative;
+        z-index: 2;
+        margin-top: 50px;
+    }
+
+    .login-hero-text h1 {
+        font-weight: 950;
+        font-size: 44px;
+        line-height: 1.12;
+        letter-spacing: -1px;
+        margin-bottom: 18px;
+    }
+
+    .login-hero-text p {
+        color: rgba(255, 255, 255, 0.78);
+        font-size: 17px;
+        line-height: 1.8;
+        max-width: 450px;
+    }
+
+    .login-benefits {
+        position: relative;
+        z-index: 2;
+        display: grid;
+        gap: 14px;
+        margin-top: 30px;
+    }
+
+    .benefit-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: rgba(255, 255, 255, 0.86);
+        font-weight: 600;
+    }
+
+    .benefit-item i {
+        color: #22c55e;
+        font-size: 18px;
+    }
+
+    .mini-dashboard {
+        position: relative;
+        z-index: 2;
+        background: rgba(255, 255, 255, 0.10);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 24px;
+        padding: 20px;
+        backdrop-filter: blur(10px);
+    }
+
+    .mini-dashboard h5 {
+        font-weight: 900;
+        margin-bottom: 12px;
+    }
+
+    .mini-stat-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+
+    .mini-stat {
+        background: rgba(255, 255, 255, 0.10);
+        border-radius: 16px;
+        padding: 12px 10px;
+        text-align: center;
+    }
+
+    .mini-stat strong {
+        display: block;
+        font-size: 22px;
+        line-height: 1;
+    }
+
+    .mini-stat small {
+        color: rgba(255, 255, 255, 0.65);
+        font-size: 12px;
+    }
+
+    .login-right {
+        padding: 54px 48px;
+        min-height: 640px;
+        display: flex;
+        align-items: center;
+    }
+
+    .login-form-wrap {
+        width: 100%;
+        max-width: 460px;
+        margin: 0 auto;
+    }
+
+    .login-icon {
+        width: 62px;
+        height: 62px;
+        border-radius: 20px;
+        background: linear-gradient(135deg, #0d6efd, #6f42c1);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 27px;
+        margin-bottom: 22px;
+    }
+
+    .login-title {
+        font-weight: 950;
+        color: #111827;
+        font-size: 34px;
+        margin-bottom: 8px;
+    }
+
+    .login-subtitle {
+        color: #667085;
+        line-height: 1.7;
+        margin-bottom: 28px;
+    }
+
+    .google-btn {
+        height: 52px;
+        border-radius: 15px;
+        font-weight: 800;
+        border: 1px solid #d0d5dd;
+        background: #ffffff;
+        color: #111827;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        text-decoration: none;
+        transition: 0.2s ease;
+    }
+
+    .google-btn:hover {
+        background: #f8fafc;
+        border-color: #98a2b3;
+        color: #111827;
+        transform: translateY(-1px);
+    }
+
+    .google-icon {
+        width: 23px;
+        height: 23px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 900;
+        color: #4285f4;
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        font-size: 14px;
+    }
+
+    .divider {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        color: #98a2b3;
+        font-size: 14px;
+        font-weight: 600;
+        margin: 24px 0;
+    }
+
+    .divider::before,
+    .divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: #e5e7eb;
+    }
+
+    .form-label {
+        font-weight: 700;
+        color: #344054;
+        margin-bottom: 8px;
+    }
+
+    .form-control {
+        border-radius: 15px;
+        padding: 13px 15px;
+        border: 1px solid #d0d5dd;
+        box-shadow: none;
+    }
+
+    .form-control:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.10);
+    }
+
+    .login-btn {
+        border-radius: 15px;
+        padding: 13px 18px;
+        font-weight: 850;
+        background: linear-gradient(135deg, #0d6efd, #6f42c1);
+        border: none;
+    }
+
+    .login-btn:hover {
+        transform: translateY(-1px);
+    }
+
+    .small-link {
+        color: #0d6efd;
+        text-decoration: none;
+        font-weight: 700;
+    }
+
+    .small-link:hover {
+        text-decoration: underline;
+    }
+
+    .alert {
+        border-radius: 15px;
+    }
+
+    @media (max-width: 992px) {
+        .login-left {
+            min-height: auto;
+            padding: 34px;
+        }
+
+        .login-hero-text h1 {
+            font-size: 34px;
+        }
+
+        .mini-dashboard {
+            margin-top: 28px;
+        }
+
+        .login-right {
+            min-height: auto;
+            padding: 38px 28px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .login-page {
+            padding: 18px 14px 50px;
+        }
+
+        .login-shell {
+            border-radius: 24px;
+        }
+
+        .login-left {
+            padding: 28px 22px;
+        }
+
+        .login-right {
+            padding: 32px 22px;
+        }
+
+        .login-title {
+            font-size: 28px;
+        }
+
+        .mini-stat-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="login-page">
+
+    <div class="login-shell">
+        <div class="row g-0">
+
+            <!-- LEFT BRAND SIDE -->
+            <div class="col-lg-6">
+                <div class="login-left">
+
+                    <div>
+                        <div class="brand-box">
+                            <div class="brand-symbol">SA</div>
+                            <div>
+                                <div class="brand-name">SYNAPTO</div>
+                                <div class="brand-tag">LEARNING & PLACEMENT</div>
+                            </div>
+                        </div>
+
+                        <div class="login-hero-text">
+                            <h1>
+                                Continue your learning and placement journey.
+                            </h1>
+
+                            <p>
+                                Login to analyze resumes, practice mock interviews, prepare projects,
+                                track progress, and improve step by step.
+                            </p>
+                        </div>
+
+                        <div class="login-benefits">
+                            <div class="benefit-item">
+                                <i class="bi bi-check-circle-fill"></i>
+                                Resume analysis with AI feedback
+                            </div>
+
+                            <div class="benefit-item">
+                                <i class="bi bi-check-circle-fill"></i>
+                                Mock interview and project defense practice
+                            </div>
+
+                            <div class="benefit-item">
+                                <i class="bi bi-check-circle-fill"></i>
+                                Dashboard, history, and improvement plan
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mini-dashboard">
+                        <h5>Your preparation overview</h5>
+
+                        <div class="mini-stat-grid">
+                            <div class="mini-stat">
+                                <strong>AI</strong>
+                                <small>Feedback</small>
+                            </div>
+
+                            <div class="mini-stat">
+                                <strong>24/7</strong>
+                                <small>Practice</small>
+                            </div>
+
+                            <div class="mini-stat">
+                                <strong>1</strong>
+                                <small>Platform</small>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- RIGHT LOGIN FORM -->
+            <div class="col-lg-6">
+                <div class="login-right">
+
+                    <div class="login-form-wrap">
+
+                        <div class="login-icon">
+                            <i class="bi bi-person-lock"></i>
+                        </div>
+
+                        <h2 class="login-title">Welcome back</h2>
+
+                        <p class="login-subtitle">
+                            Use your Google account or login with your SYNAPTO username/email and password.
+                        </p>
+
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+
+                        {% if error %}
+                            <div class="alert alert-danger">
+                                {{ error }}
+                            </div>
+                        {% endif %}
+
+                        {% if form.errors %}
+                            <div class="alert alert-danger">
+                                Please check your username and password.
+                            </div>
+                        {% endif %}
+
+                        <!-- Google Login.
+                             This will not crash login page.
+                             It works fully after Google Social App is added in Django Admin. -->
+                        <a href="/accounts/google/login/" class="google-btn mb-3">
+                            <span class="google-icon">G</span>
+                            Continue with Google
+                        </a>
+
+                        <div class="divider">
+                            or continue with username/email
+                        </div>
+
+                        <!-- Normal Login -->
+                        <form method="POST" action="{% url 'login' %}">
+                            {% csrf_token %}
+
+                            <div class="mb-3">
+                                <label class="form-label">Username or Email</label>
+                                <input type="text"
+                                       name="username"
+                                       class="form-control form-control-lg"
+                                       placeholder="Enter username or email"
+                                       required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Password</label>
+                                <input type="password"
+                                       name="password"
+                                       class="form-control form-control-lg"
+                                       placeholder="Enter password"
+                                       required>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="rememberMe">
+                                    <label class="form-check-label text-muted" for="rememberMe">
+                                        Remember me
+                                    </label>
+                                </div>
+
+                                <a href="#" class="small-link">
+                                    Forgot password?
+                                </a>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-lg w-100 login-btn">
+                                <i class="bi bi-box-arrow-in-right me-1"></i>
+                                Login
+                            </button>
+                        </form>
+
+                        <div class="text-center mt-4">
+                            <span class="text-muted">New to SYNAPTO?</span>
+                            <a href="{% url 'register' %}" class="small-link">
+                                Create account
+                            </a>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock body %}

@@ -1,0 +1,314 @@
+{% extends "base.html" %}
+
+{% block title %}Profile | SYNAPTO{% endblock title %}
+
+{% block body %}
+
+<style>
+    .profile-page {
+        padding: 32px 24px 100px;
+    }
+
+    .profile-wrapper {
+        max-width: 1050px;
+        margin: 0 auto;
+    }
+
+    .profile-hero {
+        border-radius: 30px;
+        overflow: hidden;
+        background:
+            radial-gradient(circle at 20% 20%, rgba(13, 110, 253, 0.25), transparent 30%),
+            radial-gradient(circle at 90% 20%, rgba(111, 66, 193, 0.28), transparent 35%),
+            linear-gradient(135deg, #0f172a, #1e1b4b);
+        color: white;
+        padding: 42px;
+        box-shadow: 0 24px 60px rgba(15, 23, 42, 0.15);
+        position: relative;
+    }
+
+    .profile-hero::after {
+        content: "";
+        position: absolute;
+        width: 260px;
+        height: 260px;
+        border-radius: 50%;
+        right: -80px;
+        top: -80px;
+        background: rgba(255, 255, 255, 0.07);
+    }
+
+    .profile-main {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        gap: 26px;
+        flex-wrap: wrap;
+    }
+
+    .profile-photo {
+        width: 118px;
+        height: 118px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 5px solid rgba(255, 255, 255, 0.35);
+        box-shadow: 0 18px 36px rgba(0, 0, 0, 0.25);
+        background: white;
+    }
+
+    .profile-name {
+        font-weight: 950;
+        font-size: 34px;
+        margin-bottom: 6px;
+        color: white;
+    }
+
+    .profile-email {
+        color: rgba(255, 255, 255, 0.78);
+        font-size: 17px;
+        margin-bottom: 14px;
+        word-break: break-word;
+    }
+
+    .profile-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-weight: 700;
+        font-size: 14px;
+    }
+
+    .profile-badge i {
+        color: #22c55e;
+    }
+
+    .profile-content {
+        margin-top: 28px;
+    }
+
+    .info-card {
+        border: 0;
+        border-radius: 24px;
+        box-shadow: 0 12px 34px rgba(15, 23, 42, 0.08);
+        height: 100%;
+        background: #ffffff;
+    }
+
+    .info-card .card-body {
+        padding: 24px;
+    }
+
+    .info-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 16px;
+        background: #eef4ff;
+        color: #0d6efd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        margin-bottom: 16px;
+    }
+
+    .info-label {
+        color: #667085;
+        font-size: 14px;
+        font-weight: 800;
+        margin-bottom: 7px;
+    }
+
+    .info-value {
+        color: #111827;
+        font-weight: 850;
+        font-size: 18px;
+        word-break: break-word;
+    }
+
+    .quick-card {
+        border: 0;
+        border-radius: 26px;
+        background: linear-gradient(135deg, #f8fbff, #f6f3ff);
+        box-shadow: 0 12px 34px rgba(15, 23, 42, 0.08);
+    }
+
+    .quick-card .card-body {
+        padding: 28px;
+    }
+
+    .quick-title {
+        font-weight: 950;
+        color: #111827;
+        margin-bottom: 8px;
+    }
+
+    .quick-text {
+        color: #667085;
+        line-height: 1.7;
+        margin-bottom: 22px;
+    }
+
+    .profile-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .profile-actions .btn {
+        border-radius: 14px;
+        font-weight: 800;
+        padding: 11px 20px;
+    }
+
+    @media (max-width: 768px) {
+        .profile-page {
+            padding: 22px 14px 80px;
+        }
+
+        .profile-hero {
+            padding: 32px 22px;
+            text-align: center;
+        }
+
+        .profile-main {
+            justify-content: center;
+        }
+
+        .profile-name {
+            font-size: 27px;
+        }
+
+        .profile-actions {
+            justify-content: center;
+        }
+
+        .profile-actions .btn {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="profile-page">
+
+    <div class="profile-wrapper">
+
+        <section class="profile-hero">
+
+            <div class="profile-main">
+
+                {% if google_picture %}
+                    <img src="{{ google_picture }}" class="profile-photo" alt="Google profile picture">
+                {% else %}
+                    <img src="https://ui-avatars.com/api/?name={{ request.user.username }}&background=0D6EFD&color=fff&size=256"
+                         class="profile-photo"
+                         alt="User profile picture">
+                {% endif %}
+
+                <div>
+                    <h1 class="profile-name">{{ google_name }}</h1>
+                    <p class="profile-email">{{ google_email }}</p>
+
+                    <div class="profile-badge">
+                        <i class="bi bi-check-circle-fill"></i>
+                        {{ login_type }} · Active
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+        <div class="profile-content">
+
+            <div class="row g-4">
+
+                <div class="col-md-6 col-xl-3">
+                    <div class="card info-card">
+                        <div class="card-body">
+                            <div class="info-icon">
+                                <i class="bi bi-person-fill"></i>
+                            </div>
+                            <div class="info-label">Full Name</div>
+                            <div class="info-value">{{ google_name }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-xl-3">
+                    <div class="card info-card">
+                        <div class="card-body">
+                            <div class="info-icon">
+                                <i class="bi bi-envelope-fill"></i>
+                            </div>
+                            <div class="info-label">Email Address</div>
+                            <div class="info-value">{{ google_email }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-xl-3">
+                    <div class="card info-card">
+                        <div class="card-body">
+                            <div class="info-icon">
+                                <i class="bi bi-at"></i>
+                            </div>
+                            <div class="info-label">Username</div>
+                            <div class="info-value">{{ request.user.username }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-xl-3">
+                    <div class="card info-card">
+                        <div class="card-body">
+                            <div class="info-icon">
+                                <i class="bi bi-shield-check"></i>
+                            </div>
+                            <div class="info-label">Login Type</div>
+                            <div class="info-value">{{ login_type }}</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="card quick-card mt-4">
+                <div class="card-body">
+                    <div class="row align-items-center g-4">
+                        <div class="col-lg-8">
+                            <h3 class="quick-title">Your SYNAPTO account is ready</h3>
+                            <p class="quick-text">
+                                Use your dashboard to analyze resumes, practice mock interviews,
+                                prepare project defense answers, and track your progress.
+                            </p>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="profile-actions justify-content-lg-end">
+                                <a href="{% url 'dashboard' %}" class="btn btn-primary">
+                                    <i class="bi bi-grid-1x2-fill me-1"></i>
+                                    Dashboard
+                                </a>
+
+                                <a href="{% url 'logout' %}" class="btn btn-outline-danger">
+                                    <i class="bi bi-box-arrow-right me-1"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock body %}

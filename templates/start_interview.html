@@ -1,0 +1,616 @@
+{% extends "base.html" %}
+
+{% block title %}Mock Interview | SYNAPTO{% endblock title %}
+
+{% block body %}
+
+<style>
+    .interview-page {
+        padding: 32px 24px 110px;
+        background:
+            radial-gradient(circle at top left, rgba(37, 99, 235, 0.10), transparent 32%),
+            radial-gradient(circle at top right, rgba(109, 93, 252, 0.10), transparent 35%),
+            #f6f8fb;
+    }
+
+    .interview-wrap {
+        max-width: 1220px;
+        margin: 0 auto;
+    }
+
+    .interview-shell {
+        background: #ffffff;
+        border: 1px solid #e8eef6;
+        border-radius: 30px;
+        box-shadow: 0 20px 55px rgba(15, 23, 42, 0.09);
+        overflow: hidden;
+    }
+
+    .interview-left {
+        padding: 34px;
+    }
+
+    .interview-right {
+        height: 100%;
+        padding: 34px;
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.97), rgba(30, 27, 75, 0.97));
+        color: #ffffff;
+    }
+
+    .title-row {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 14px;
+    }
+
+    .title-icon {
+        width: 64px;
+        height: 64px;
+        border-radius: 20px;
+        background: linear-gradient(135deg, #2563eb, #6d5dfc);
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 30px;
+        box-shadow: 0 14px 30px rgba(37, 99, 235, 0.24);
+        flex-shrink: 0;
+    }
+
+    .main-title {
+        font-size: 34px;
+        font-weight: 950;
+        color: #111827;
+        margin-bottom: 4px;
+        letter-spacing: -0.4px;
+    }
+
+    .main-subtitle {
+        color: #667085;
+        margin-bottom: 0;
+        line-height: 1.65;
+    }
+
+    .steps-box {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+        margin: 28px 0;
+    }
+
+    .step-card {
+        background: #f8fafc;
+        border: 1px solid #e8eef6;
+        border-radius: 20px;
+        padding: 18px;
+        min-height: 112px;
+    }
+
+    .step-no {
+        color: #2563eb;
+        font-weight: 900;
+        font-size: 13px;
+        margin-bottom: 8px;
+    }
+
+    .step-title {
+        color: #111827;
+        font-weight: 900;
+        margin-bottom: 5px;
+    }
+
+    .step-text {
+        color: #667085;
+        font-size: 13.5px;
+        line-height: 1.55;
+        margin-bottom: 0;
+    }
+
+    .form-label {
+        font-weight: 850;
+        color: #111827;
+        margin-bottom: 7px;
+    }
+
+    .required-star {
+        color: #dc3545;
+    }
+
+    .help-text {
+        color: #667085;
+        font-size: 13px;
+        margin-bottom: 8px;
+    }
+
+    .form-control,
+    .form-select {
+        border: 1px solid #d5dbe7;
+        border-radius: 15px;
+        padding: 13px 15px;
+        box-shadow: none;
+        color: #111827;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.10);
+    }
+
+    textarea.form-control {
+        min-height: 150px;
+        resize: vertical;
+    }
+
+    .submit-btn {
+        border: none;
+        border-radius: 16px;
+        padding: 14px 20px;
+        font-weight: 900;
+        font-size: 17px;
+        background: linear-gradient(135deg, #2563eb, #6d5dfc);
+        box-shadow: 0 14px 28px rgba(37, 99, 235, 0.24);
+    }
+
+    .submit-btn:hover {
+        transform: translateY(-1px);
+    }
+
+    .side-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 13px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.10);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        color: rgba(255, 255, 255, 0.86);
+        font-weight: 800;
+        font-size: 13px;
+        margin-bottom: 20px;
+    }
+
+    .side-title {
+        font-size: 30px;
+        font-weight: 950;
+        line-height: 1.16;
+        margin-bottom: 14px;
+    }
+
+    .side-text {
+        color: rgba(255, 255, 255, 0.72);
+        line-height: 1.75;
+        margin-bottom: 24px;
+    }
+
+    .interview-list {
+        display: grid;
+        gap: 12px;
+        margin-bottom: 24px;
+    }
+
+    .interview-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 14px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.10);
+    }
+
+    .interview-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 13px;
+        background: rgba(37, 99, 235, 0.28);
+        color: #93c5fd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .interview-item strong {
+        color: #ffffff;
+        display: block;
+        margin-bottom: 2px;
+    }
+
+    .interview-item span {
+        color: rgba(255, 255, 255, 0.68);
+        font-size: 13.5px;
+        line-height: 1.5;
+    }
+
+    .secure-note {
+        background: rgba(34, 197, 94, 0.12);
+        border: 1px solid rgba(34, 197, 94, 0.22);
+        color: rgba(255, 255, 255, 0.82);
+        border-radius: 18px;
+        padding: 16px;
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        line-height: 1.55;
+    }
+
+    .secure-note i {
+        color: #4ade80;
+        font-size: 20px;
+    }
+
+    .quick-section {
+        margin-top: 28px;
+    }
+
+    .quick-card {
+        border: 0;
+        border-radius: 24px;
+        background: #ffffff;
+        box-shadow: 0 12px 32px rgba(15, 23, 42, 0.07);
+        height: 100%;
+    }
+
+    .quick-card .card-body {
+        padding: 24px;
+    }
+
+    .quick-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 16px;
+        background: #eef4ff;
+        color: #2563eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        margin-bottom: 14px;
+    }
+
+    .quick-card h5 {
+        font-weight: 950;
+        color: #111827;
+        margin-bottom: 8px;
+    }
+
+    .quick-card p {
+        color: #667085;
+        line-height: 1.7;
+        margin-bottom: 0;
+    }
+
+    @media (max-width: 992px) {
+        .interview-page {
+            padding: 22px 16px 80px;
+        }
+
+        .interview-left,
+        .interview-right {
+            padding: 26px;
+        }
+
+        .steps-box {
+            grid-template-columns: 1fr;
+        }
+
+        .main-title {
+            font-size: 28px;
+        }
+
+        .side-title {
+            font-size: 26px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .title-row {
+            align-items: flex-start;
+        }
+
+        .title-icon {
+            width: 54px;
+            height: 54px;
+            font-size: 25px;
+        }
+
+        .main-title {
+            font-size: 25px;
+        }
+    }
+</style>
+
+<div class="interview-page">
+
+    <div class="interview-wrap">
+
+        <section class="interview-shell">
+            <div class="row g-0">
+
+                <!-- LEFT FORM -->
+                <div class="col-lg-8">
+                    <div class="interview-left">
+
+                        <div class="title-row">
+                            <div class="title-icon">
+                                <i class="bi bi-mic-fill"></i>
+                            </div>
+
+                            <div>
+                                <h1 class="main-title">Mock Interview Practice</h1>
+                                <p class="main-subtitle">
+                                    Start a personalized AI interview based on your target role, skills,
+                                    experience level, and interview type.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="steps-box">
+
+                            <div class="step-card">
+                                <div class="step-no">STEP 1</div>
+                                <div class="step-title">Choose your role</div>
+                                <p class="step-text">
+                                    Tell AI which job role you are preparing for, like AIML Engineer or Python Developer.
+                                </p>
+                            </div>
+
+                            <div class="step-card">
+                                <div class="step-no">STEP 2</div>
+                                <div class="step-title">Add your skills</div>
+                                <p class="step-text">
+                                    Mention the technologies you know so AI can ask relevant technical questions.
+                                </p>
+                            </div>
+
+                            <div class="step-card">
+                                <div class="step-no">STEP 3</div>
+                                <div class="step-title">Start answering</div>
+                                <p class="step-text">
+                                    Practice interview questions and improve your answers step by step.
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <form method="POST">
+                            {% csrf_token %}
+
+                            <div class="row g-4">
+
+                                <div class="col-md-6">
+                                    <label class="form-label">
+                                        Target Role <span class="required-star">*</span>
+                                    </label>
+                                    <div class="help-text">
+                                        Enter the job role you want to practice for.
+                                    </div>
+                                    <input type="text"
+                                           name="target_role"
+                                           class="form-control form-control-lg"
+                                           placeholder="e.g. AI/ML Engineer"
+                                           required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">
+                                        Experience Level <span class="required-star">*</span>
+                                    </label>
+                                    <div class="help-text">
+                                        Choose your current level.
+                                    </div>
+                                    <select name="experience_level" class="form-select form-select-lg" required>
+                                        <option value="" selected disabled>Select level</option>
+                                        <option value="Fresher">Fresher</option>
+                                        <option value="Student">Student</option>
+                                        <option value="Internship Level">Internship Level</option>
+                                        <option value="Entry Level">Entry Level</option>
+                                        <option value="1 Year Experience">1 Year Experience</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">
+                                        Interview Type <span class="required-star">*</span>
+                                    </label>
+                                    <div class="help-text">
+                                        Select the type of interview round.
+                                    </div>
+                                    <select name="interview_type" class="form-select form-select-lg" required>
+                                        <option value="" selected disabled>Select interview type</option>
+                                        <option value="Technical Interview">Technical Interview</option>
+                                        <option value="HR Interview">HR Interview</option>
+                                        <option value="Aptitude + Technical">Aptitude + Technical</option>
+                                        <option value="Project Discussion">Project Discussion</option>
+                                        <option value="Resume Based Interview">Resume Based Interview</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">
+                                        Difficulty Level <span class="required-star">*</span>
+                                    </label>
+                                    <div class="help-text">
+                                        Choose how hard the interview should be.
+                                    </div>
+                                    <select name="difficulty" class="form-select form-select-lg" required>
+                                        <option value="" selected disabled>Select difficulty</option>
+                                        <option value="Easy">Easy</option>
+                                        <option value="Medium">Medium</option>
+                                        <option value="Hard">Hard</option>
+                                        <option value="Mixed">Mixed</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label">
+                                        Skills / Technologies <span class="required-star">*</span>
+                                    </label>
+                                    <div class="help-text">
+                                        Mention your skills, languages, frameworks, tools, and subjects.
+                                    </div>
+                                    <input type="text"
+                                           name="skills"
+                                           class="form-control form-control-lg"
+                                           placeholder="e.g. Python, Django, Machine Learning, SQL, DBMS, DSA"
+                                           required>
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label">
+                                        Short Background
+                                    </label>
+                                    <div class="help-text">
+                                        Optional: Tell AI about your project, resume, or weak areas.
+                                    </div>
+                                    <textarea name="background"
+                                              class="form-control form-control-lg"
+                                              placeholder="Example: I am a final-year AIML student. I know basic Django, Python, SQL, and I built a medical diagnosis project. I want to improve technical answers and project explanation."></textarea>
+                                </div>
+
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary btn-lg w-100 submit-btn">
+                                        <i class="bi bi-play-fill me-1"></i>
+                                        Start Mock Interview
+                                    </button>
+                                </div>
+
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+
+                <!-- RIGHT GUIDE PANEL -->
+                <div class="col-lg-4">
+                    <div class="interview-right">
+
+                        <div class="side-badge">
+                            <i class="bi bi-stars"></i>
+                            AI Interview Coach
+                        </div>
+
+                        <h2 class="side-title">
+                            Practice like a real interview.
+                        </h2>
+
+                        <p class="side-text">
+                            The AI interviewer will ask questions based on your role, skills, difficulty level,
+                            and background. Answer naturally and improve with feedback.
+                        </p>
+
+                        <div class="interview-list">
+
+                            <div class="interview-item">
+                                <div class="interview-icon">
+                                    <i class="bi bi-cpu-fill"></i>
+                                </div>
+                                <div>
+                                    <strong>Technical Questions</strong>
+                                    <span>Python, Django, ML, DBMS, DSA, SQL, and role-based questions.</span>
+                                </div>
+                            </div>
+
+                            <div class="interview-item">
+                                <div class="interview-icon">
+                                    <i class="bi bi-chat-left-text-fill"></i>
+                                </div>
+                                <div>
+                                    <strong>HR Questions</strong>
+                                    <span>Tell me about yourself, strengths, weakness, goals, and communication.</span>
+                                </div>
+                            </div>
+
+                            <div class="interview-item">
+                                <div class="interview-icon">
+                                    <i class="bi bi-kanban-fill"></i>
+                                </div>
+                                <div>
+                                    <strong>Project Questions</strong>
+                                    <span>Explain project workflow, technologies, challenges, and results.</span>
+                                </div>
+                            </div>
+
+                            <div class="interview-item">
+                                <div class="interview-icon">
+                                    <i class="bi bi-graph-up-arrow"></i>
+                                </div>
+                                <div>
+                                    <strong>Improvement Feedback</strong>
+                                    <span>Get suggestions to make your answer clearer and more professional.</span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="secure-note">
+                            <i class="bi bi-shield-check"></i>
+                            <div>
+                                <strong>Practice safely.</strong><br>
+                                Your answers are used to improve your interview preparation and show your history.
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- BELOW CARDS -->
+        <section class="quick-section">
+            <div class="row g-4">
+
+                <div class="col-md-4">
+                    <div class="card quick-card">
+                        <div class="card-body">
+                            <div class="quick-icon">
+                                <i class="bi bi-person-video3"></i>
+                            </div>
+                            <h5>Interview Simulation</h5>
+                            <p>
+                                Practice with role-based questions like a real HR or technical interview.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card quick-card">
+                        <div class="card-body">
+                            <div class="quick-icon">
+                                <i class="bi bi-pencil-square"></i>
+                            </div>
+                            <h5>Answer Improvement</h5>
+                            <p>
+                                Learn how to answer in simple, clear, and professional English.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card quick-card">
+                        <div class="card-body">
+                            <div class="quick-icon">
+                                <i class="bi bi-clock-history"></i>
+                            </div>
+                            <h5>Track Your History</h5>
+                            <p>
+                                Review your past interview sessions and improve your weak areas.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </div>
+
+</div>
+
+{% endblock body %}

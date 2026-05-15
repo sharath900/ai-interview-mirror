@@ -1,0 +1,833 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Home | SYNAPTO{% endblock title %}
+
+{% block body %}
+
+<style>
+    .home-page {
+        padding: 22px;
+        overflow-x: hidden;
+    }
+
+    .hero-section {
+        position: relative;
+        min-height: 610px;
+        border-radius: 34px;
+        overflow: hidden;
+        background-image:
+            linear-gradient(
+                90deg,
+                rgba(4, 10, 30, 0.10) 0%,
+                rgba(4, 10, 30, 0.04) 25%,
+                rgba(4, 10, 30, 0.02) 50%,
+                rgba(4, 10, 30, 0.04) 75%,
+                rgba(4, 10, 30, 0.10) 100%
+            ),
+            url("{% static 'img/hero-students.png' %}");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        box-shadow: 0 24px 60px rgba(15, 23, 42, 0.18);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+    }
+
+    .hero-center-card {
+        width: min(500px, 84%);
+        text-align: center;
+        padding: 22px 24px;
+        border-radius: 24px;
+        background: rgba(7, 12, 30, 0.40);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 16px 45px rgba(0, 0, 0, 0.22);
+        backdrop-filter: blur(6px);
+        position: relative;
+        z-index: 3;
+        margin-top: 26px;
+    }
+
+    /* Same logo feeling as navbar */
+    .hero-brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 15px;
+        border-radius: 15px;
+        background: rgba(16, 21, 28, 0.78);
+        border: 1px solid rgba(255, 255, 255, 0.13);
+        margin-bottom: 16px;
+    }
+
+    .hero-brand-symbol {
+        font-weight: 900;
+        font-size: 27px;
+        line-height: 1;
+        letter-spacing: -3px;
+        background: linear-gradient(135deg, #ffffff, #d99a18);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .hero-brand-text {
+        text-align: left;
+        line-height: 1.1;
+    }
+
+    .hero-brand-name {
+        color: #ffffff;
+        font-weight: 900;
+        font-size: 19px;
+        letter-spacing: 1.4px;
+        line-height: 1;
+    }
+
+    .hero-brand-tag {
+        color: rgba(255, 255, 255, 0.65);
+        font-size: 10px;
+        letter-spacing: 1.8px;
+        margin-top: 4px;
+        font-weight: 600;
+    }
+
+    .hero-title {
+        font-size: clamp(25px, 3vw, 38px);
+        font-weight: 950;
+        line-height: 1.14;
+        letter-spacing: -0.7px;
+        margin-bottom: 13px;
+        color: #ffffff;
+    }
+
+    .hero-title span {
+        color: #ffffff;
+    }
+
+    .hero-text {
+        max-width: 450px;
+        margin: 0 auto 19px;
+        font-size: 15px;
+        line-height: 1.65;
+        color: rgba(255, 255, 255, 0.82);
+    }
+
+    .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 18px;
+    }
+
+    .hero-actions .btn {
+        border-radius: 12px;
+        padding: 9px 17px;
+        font-weight: 800;
+        font-size: 14.5px;
+    }
+
+    .hero-points {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 11px;
+    }
+
+    .hero-point {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: rgba(255, 255, 255, 0.86);
+        font-weight: 700;
+        font-size: 12.8px;
+    }
+
+    .hero-point i {
+        color: #22c55e;
+    }
+
+    /* Smaller card, placed below the girl side */
+    .student-plan-card {
+        position: absolute;
+        right: 42px;
+        bottom: 26px;
+        width: 245px;
+        background: rgba(255, 255, 255, 0.95);
+        color: #111827;
+        border-radius: 19px;
+        padding: 14px;
+        box-shadow: 0 18px 42px rgba(0, 0, 0, 0.22);
+        z-index: 4;
+    }
+
+    .student-plan-card h5 {
+        font-weight: 950;
+        margin-bottom: 6px;
+        font-size: 16px;
+    }
+
+    .student-plan-card p {
+        color: #667085;
+        font-size: 12.5px;
+        line-height: 1.5;
+        margin-bottom: 10px;
+    }
+
+    .progress-mini {
+        height: 7px;
+        border-radius: 999px;
+        background: #e5e7eb;
+        overflow: hidden;
+        margin-bottom: 10px;
+    }
+
+    .progress-mini span {
+        display: block;
+        height: 100%;
+        width: 72%;
+        background: linear-gradient(90deg, #0d6efd, #6f42c1);
+    }
+
+    .plan-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 7px;
+    }
+
+    .plan-stat {
+        background: #f8fafc;
+        border-radius: 12px;
+        padding: 8px 5px;
+        text-align: center;
+    }
+
+    .plan-stat strong {
+        display: block;
+        font-size: 15px;
+        color: #111827;
+        line-height: 1;
+    }
+
+    .plan-stat small {
+        color: #667085;
+        font-size: 10px;
+    }
+
+    .section-block {
+        margin-top: 34px;
+    }
+
+    .section-head {
+        margin-bottom: 24px;
+    }
+
+    .section-title {
+        font-size: 34px;
+        font-weight: 950;
+        color: #111827;
+        margin-bottom: 8px;
+        letter-spacing: -0.5px;
+    }
+
+    .section-subtitle {
+        color: #667085;
+        font-size: 17px;
+        margin-bottom: 0;
+    }
+
+    .feature-card {
+        border: 0;
+        border-radius: 24px;
+        height: 100%;
+        background: #ffffff;
+        box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+        transition: 0.25s ease;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 18px 44px rgba(15, 23, 42, 0.13);
+    }
+
+    .feature-card .card-body {
+        padding: 24px;
+    }
+
+    .feature-icon {
+        width: 58px;
+        height: 58px;
+        border-radius: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 25px;
+        margin-bottom: 18px;
+    }
+
+    .icon-blue {
+        background: #eaf2ff;
+        color: #0d6efd;
+    }
+
+    .icon-green {
+        background: #eafaf1;
+        color: #198754;
+    }
+
+    .icon-purple {
+        background: #f1eaff;
+        color: #6f42c1;
+    }
+
+    .icon-orange {
+        background: #fff3df;
+        color: #fd7e14;
+    }
+
+    .feature-card h4 {
+        font-weight: 900;
+        color: #111827;
+        margin-bottom: 10px;
+    }
+
+    .feature-card p {
+        color: #667085;
+        line-height: 1.7;
+        margin-bottom: 16px;
+    }
+
+    .feature-list {
+        list-style: none;
+        padding-left: 0;
+        margin-bottom: 0;
+    }
+
+    .feature-list li {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #475467;
+        margin-bottom: 9px;
+        font-size: 15px;
+    }
+
+    .feature-list i {
+        color: #198754;
+    }
+
+    .flow-card {
+        border: 0;
+        border-radius: 24px;
+        height: 100%;
+        background: #ffffff;
+        box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+    }
+
+    .flow-number {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #0d6efd, #6f42c1);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 950;
+        margin-bottom: 15px;
+    }
+
+    .flow-card h5 {
+        font-weight: 900;
+        color: #111827;
+    }
+
+    .flow-card p {
+        color: #667085;
+        line-height: 1.7;
+    }
+
+    .why-box {
+        background: linear-gradient(135deg, #eef4ff, #f7f1ff);
+        border-radius: 28px;
+        padding: 34px;
+    }
+
+    .why-mini-card {
+        background: white;
+        border-radius: 22px;
+        padding: 22px;
+        height: 100%;
+        box-shadow: 0 10px 28px rgba(15, 23, 42, 0.07);
+    }
+
+    .why-mini-card i {
+        font-size: 28px;
+        color: #0d6efd;
+    }
+
+    .why-mini-card h5 {
+        font-weight: 900;
+        margin-top: 14px;
+        margin-bottom: 8px;
+    }
+
+    .why-mini-card p {
+        color: #667085;
+        margin-bottom: 0;
+        line-height: 1.7;
+    }
+
+    .cta-box {
+        background: linear-gradient(135deg, #111827, #1f2937);
+        color: white;
+        border-radius: 28px;
+        padding: 40px;
+        box-shadow: 0 16px 40px rgba(15, 23, 42, 0.12);
+    }
+
+    .cta-box h3 {
+        font-weight: 950;
+        font-size: 34px;
+        margin-bottom: 10px;
+    }
+
+    .cta-box p {
+        color: rgba(255, 255, 255, 0.78);
+        font-size: 17px;
+        margin-bottom: 0;
+        line-height: 1.7;
+    }
+
+    @media (max-width: 1400px) {
+        .hero-section {
+            min-height: 570px;
+        }
+
+        .student-plan-card {
+            width: 230px;
+            right: 28px;
+            bottom: 22px;
+        }
+
+        .hero-center-card {
+            width: min(480px, 84%);
+        }
+    }
+
+    @media (max-width: 1200px) {
+        .student-plan-card {
+            display: none;
+        }
+    }
+
+    @media (max-width: 992px) {
+        .home-page {
+            padding: 16px;
+        }
+
+        .hero-section {
+            min-height: auto;
+            padding: 36px 22px;
+            border-radius: 26px;
+            background-position: center;
+        }
+
+        .hero-center-card {
+            width: 100%;
+            padding: 24px 18px;
+            margin-top: 0;
+        }
+
+        .hero-brand-name {
+            font-size: 17px;
+            letter-spacing: 2px;
+        }
+
+        .hero-brand-tag {
+            font-size: 9px;
+            letter-spacing: 1.5px;
+        }
+
+        .hero-title {
+            font-size: 29px;
+        }
+
+        .hero-text {
+            font-size: 15px;
+        }
+
+        .hero-actions {
+            flex-direction: column;
+        }
+
+        .hero-actions .btn {
+            width: 100%;
+        }
+
+        .section-title {
+            font-size: 28px;
+        }
+
+        .cta-box {
+            padding: 30px 24px;
+        }
+
+        .cta-box h3 {
+            font-size: 28px;
+        }
+    }
+</style>
+
+<div class="home-page">
+
+    <!-- HERO SECTION -->
+    <section class="hero-section">
+
+        <div class="hero-center-card">
+
+            <div class="hero-brand">
+                <div class="hero-brand-symbol">SA</div>
+                <div class="hero-brand-text">
+                    <div class="hero-brand-name">SYNAPTO</div>
+                    <div class="hero-brand-tag">LEARNING & PLACEMENT</div>
+                </div>
+            </div>
+
+            <h1 class="hero-title">
+                Learn for Exams.
+                <br>
+                Practice for Placements.
+                <br>
+                <span>Build Your Future.</span>
+            </h1>
+
+            <p class="hero-text">
+                AI-powered learning and placement preparation platform for engineering students.
+                Prepare for semester exams, DSA, Python coding, resume-based interviews, and project defense.
+            </p>
+
+            <div class="hero-actions">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'dashboard' %}" class="btn btn-light btn-lg">
+                        <i class="bi bi-grid-1x2-fill me-2"></i>
+                        Go to Dashboard
+                    </a>
+
+                    <a href="{% url 'resume_analyzer' %}" class="btn btn-outline-light btn-lg">
+                        <i class="bi bi-file-earmark-person-fill me-2"></i>
+                        Analyze Resume
+                    </a>
+                {% else %}
+                    <a href="{% url 'register' %}" class="btn btn-light btn-lg">
+                        <i class="bi bi-rocket-takeoff-fill me-2"></i>
+                        Get Started Free
+                    </a>
+
+                    <a href="{% url 'login' %}" class="btn btn-outline-light btn-lg">
+                        Login
+                    </a>
+                {% endif %}
+            </div>
+
+            <div class="hero-points">
+                <div class="hero-point">
+                    <i class="bi bi-check-circle-fill"></i>
+                    AI Feedback
+                </div>
+
+                <div class="hero-point">
+                    <i class="bi bi-check-circle-fill"></i>
+                    Semester Prep
+                </div>
+
+                <div class="hero-point">
+                    <i class="bi bi-check-circle-fill"></i>
+                    DSA Practice
+                </div>
+
+                <div class="hero-point">
+                    <i class="bi bi-check-circle-fill"></i>
+                    Placement Ready
+                </div>
+            </div>
+
+        </div>
+
+        <div class="student-plan-card">
+            <h5>Today’s Plan</h5>
+            <p>
+                Revise one topic, solve one DSA problem, and complete one mock interview.
+            </p>
+
+            <div class="progress-mini">
+                <span></span>
+            </div>
+
+            <div class="plan-stats">
+                <div class="plan-stat">
+                    <strong>72%</strong>
+                    <small>Progress</small>
+                </div>
+
+                <div class="plan-stat">
+                    <strong>18</strong>
+                    <small>Mocks</small>
+                </div>
+
+                <div class="plan-stat">
+                    <strong>128</strong>
+                    <small>DSA</small>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+
+    <!-- FEATURES -->
+    <section class="section-block">
+        <div class="section-head">
+            <h2 class="section-title">Everything Students Need in One Place</h2>
+            <p class="section-subtitle">
+                A complete preparation system for exams, coding, projects, and placements.
+            </p>
+        </div>
+
+        <div class="row g-4">
+
+            <div class="col-md-6 col-xl-3">
+                <div class="card feature-card">
+                    <div class="card-body">
+                        <div class="feature-icon icon-blue">
+                            <i class="bi bi-briefcase-fill"></i>
+                        </div>
+
+                        <h4>Placement Prep</h4>
+                        <p>
+                            Practice interviews, analyze resumes, defend projects, and improve weak areas.
+                        </p>
+
+                        <ul class="feature-list">
+                            <li><i class="bi bi-check-circle-fill"></i> Resume analysis</li>
+                            <li><i class="bi bi-check-circle-fill"></i> Mock interviews</li>
+                            <li><i class="bi bi-check-circle-fill"></i> Project defense</li>
+                            <li><i class="bi bi-check-circle-fill"></i> Improvement plan</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <div class="card feature-card">
+                    <div class="card-body">
+                        <div class="feature-icon icon-green">
+                            <i class="bi bi-book-fill"></i>
+                        </div>
+
+                        <h4>Semester Prep</h4>
+                        <p>
+                            Learn subject topics in simple English with exam-focused explanations.
+                        </p>
+
+                        <ul class="feature-list">
+                            <li><i class="bi bi-check-circle-fill"></i> Topic-wise learning</li>
+                            <li><i class="bi bi-check-circle-fill"></i> Important questions</li>
+                            <li><i class="bi bi-check-circle-fill"></i> 5-mark answers</li>
+                            <li><i class="bi bi-check-circle-fill"></i> 10-mark answers</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <div class="card feature-card">
+                    <div class="card-body">
+                        <div class="feature-icon icon-purple">
+                            <i class="bi bi-code-slash"></i>
+                        </div>
+
+                        <h4>DSA Practice</h4>
+                        <p>
+                            Practice DSA problems step by step for coding rounds and internships.
+                        </p>
+
+                        <ul class="feature-list">
+                            <li><i class="bi bi-check-circle-fill"></i> Arrays & strings</li>
+                            <li><i class="bi bi-check-circle-fill"></i> Trees & graphs</li>
+                            <li><i class="bi bi-check-circle-fill"></i> Dynamic programming</li>
+                            <li><i class="bi bi-check-circle-fill"></i> Progress tracking</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <div class="card feature-card">
+                    <div class="card-body">
+                        <div class="feature-icon icon-orange">
+                            <i class="bi bi-terminal-fill"></i>
+                        </div>
+
+                        <h4>Python Practice</h4>
+                        <p>
+                            Practice Python logic and coding exercises before using compiler features.
+                        </p>
+
+                        <ul class="feature-list">
+                            <li><i class="bi bi-check-circle-fill"></i> Beginner tasks</li>
+                            <li><i class="bi bi-check-circle-fill"></i> Logic building</li>
+                            <li><i class="bi bi-check-circle-fill"></i> Code examples</li>
+                            <li><i class="bi bi-check-circle-fill"></i> Compiler soon</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- HOW IT WORKS -->
+    <section class="section-block">
+        <div class="section-head">
+            <h2 class="section-title">How SYNAPTO Helps You Improve</h2>
+            <p class="section-subtitle">
+                A simple learning path for students who want better marks and better placements.
+            </p>
+        </div>
+
+        <div class="row g-4">
+
+            <div class="col-md-6 col-xl-3">
+                <div class="card flow-card">
+                    <div class="card-body p-4">
+                        <div class="flow-number">1</div>
+                        <h5>Choose Your Goal</h5>
+                        <p class="mb-0">
+                            Select semester prep, DSA practice, resume analysis, or interview practice.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <div class="card flow-card">
+                    <div class="card-body p-4">
+                        <div class="flow-number">2</div>
+                        <h5>Practice Daily</h5>
+                        <p class="mb-0">
+                            Learn topics, solve problems, answer interview questions, and build confidence.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <div class="card flow-card">
+                    <div class="card-body p-4">
+                        <div class="flow-number">3</div>
+                        <h5>Get AI Feedback</h5>
+                        <p class="mb-0">
+                            Understand weak areas and improve your answers in simple English.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <div class="card flow-card">
+                    <div class="card-body p-4">
+                        <div class="flow-number">4</div>
+                        <h5>Track Progress</h5>
+                        <p class="mb-0">
+                            Use dashboard and history to see your improvement step by step.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- WHY SECTION -->
+    <section class="section-block">
+        <div class="why-box">
+            <div class="section-head">
+                <h2 class="section-title">Why Students Will Use SYNAPTO</h2>
+                <p class="section-subtitle">
+                    Built for students who want one simple platform for academics and career preparation.
+                </p>
+            </div>
+
+            <div class="row g-4">
+
+                <div class="col-md-4">
+                    <div class="why-mini-card">
+                        <i class="bi bi-stars"></i>
+                        <h5>AI-Powered Guidance</h5>
+                        <p>
+                            Get feedback on resume, interview answers, project explanations, and weak areas.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="why-mini-card">
+                        <i class="bi bi-book-half"></i>
+                        <h5>Simple Learning</h5>
+                        <p>
+                            Learn semester topics in simple English with important questions and revision notes.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="why-mini-card">
+                        <i class="bi bi-graph-up-arrow"></i>
+                        <h5>Progress Tracking</h5>
+                        <p>
+                            Track scores, histories, weak areas, and improvement plan from one dashboard.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- CTA -->
+    <section class="section-block">
+        <div class="cta-box">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-8">
+                    <h3>Start building your future with SYNAPTO</h3>
+                    <p>
+                        From semester preparation to placements, get a clear path and improve step by step.
+                    </p>
+                </div>
+
+                <div class="col-lg-4 text-lg-end">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'resume_analyzer' %}" class="btn btn-light btn-lg px-4">
+                            <i class="bi bi-rocket-takeoff-fill me-2"></i>
+                            Start Now
+                        </a>
+                    {% else %}
+                        <a href="{% url 'register' %}" class="btn btn-light btn-lg px-4">
+                            <i class="bi bi-rocket-takeoff-fill me-2"></i>
+                            Create Account
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+{% endblock body %}

@@ -1,0 +1,581 @@
+{% extends "base.html" %}
+
+{% block title %}Project Defense | SYNAPTO{% endblock title %}
+
+{% block body %}
+
+<style>
+    .project-page {
+        padding: 32px 24px 110px;
+        background:
+            radial-gradient(circle at top left, rgba(37, 99, 235, 0.10), transparent 32%),
+            radial-gradient(circle at top right, rgba(109, 93, 252, 0.10), transparent 35%),
+            #f6f8fb;
+    }
+
+    .project-wrap {
+        max-width: 1220px;
+        margin: 0 auto;
+    }
+
+    .project-hero {
+        background: #ffffff;
+        border: 1px solid #e8eef6;
+        border-radius: 30px;
+        box-shadow: 0 20px 55px rgba(15, 23, 42, 0.09);
+        overflow: hidden;
+    }
+
+    .project-left {
+        padding: 34px;
+    }
+
+    .project-right {
+        height: 100%;
+        padding: 34px;
+        background:
+            linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(30, 27, 75, 0.96));
+        color: #ffffff;
+    }
+
+    .title-row {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 12px;
+    }
+
+    .title-icon {
+        width: 64px;
+        height: 64px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #2563eb, #6d5dfc);
+        color: #ffffff;
+        font-size: 30px;
+        box-shadow: 0 14px 30px rgba(37, 99, 235, 0.25);
+        flex-shrink: 0;
+    }
+
+    .main-title {
+        font-size: 34px;
+        font-weight: 950;
+        color: #111827;
+        margin-bottom: 4px;
+        letter-spacing: -0.4px;
+    }
+
+    .main-subtitle {
+        color: #667085;
+        margin-bottom: 0;
+        line-height: 1.6;
+    }
+
+    .steps-box {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+        margin: 28px 0;
+    }
+
+    .step-card {
+        background: #f8fafc;
+        border: 1px solid #e8eef6;
+        border-radius: 20px;
+        padding: 18px;
+        min-height: 112px;
+    }
+
+    .step-no {
+        color: #2563eb;
+        font-weight: 900;
+        font-size: 13px;
+        margin-bottom: 8px;
+    }
+
+    .step-title {
+        color: #111827;
+        font-weight: 900;
+        margin-bottom: 5px;
+    }
+
+    .step-text {
+        color: #667085;
+        font-size: 13.5px;
+        line-height: 1.55;
+        margin-bottom: 0;
+    }
+
+    .form-label {
+        font-weight: 850;
+        color: #111827;
+        margin-bottom: 7px;
+    }
+
+    .required-star {
+        color: #dc3545;
+    }
+
+    .help-text {
+        color: #667085;
+        font-size: 13px;
+        margin-bottom: 8px;
+    }
+
+    .form-control {
+        border: 1px solid #d5dbe7;
+        border-radius: 15px;
+        padding: 13px 15px;
+        box-shadow: none;
+        color: #111827;
+    }
+
+    .form-control:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.10);
+    }
+
+    textarea.form-control {
+        min-height: 170px;
+        resize: vertical;
+    }
+
+    .submit-btn {
+        border: none;
+        border-radius: 16px;
+        padding: 14px 20px;
+        font-weight: 900;
+        font-size: 17px;
+        background: linear-gradient(135deg, #15803d, #16a34a);
+        box-shadow: 0 14px 28px rgba(22, 163, 74, 0.22);
+    }
+
+    .submit-btn:hover {
+        transform: translateY(-1px);
+    }
+
+    .side-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 13px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.10);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        color: rgba(255, 255, 255, 0.86);
+        font-weight: 800;
+        font-size: 13px;
+        margin-bottom: 20px;
+    }
+
+    .side-title {
+        font-size: 30px;
+        font-weight: 950;
+        line-height: 1.16;
+        margin-bottom: 14px;
+    }
+
+    .side-text {
+        color: rgba(255, 255, 255, 0.72);
+        line-height: 1.75;
+        margin-bottom: 24px;
+    }
+
+    .question-list {
+        display: grid;
+        gap: 12px;
+        margin-bottom: 24px;
+    }
+
+    .question-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 14px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.10);
+    }
+
+    .question-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 13px;
+        background: rgba(37, 99, 235, 0.28);
+        color: #93c5fd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .question-item strong {
+        color: #ffffff;
+        display: block;
+        margin-bottom: 2px;
+    }
+
+    .question-item span {
+        color: rgba(255, 255, 255, 0.68);
+        font-size: 13.5px;
+        line-height: 1.5;
+    }
+
+    .secure-note {
+        background: rgba(34, 197, 94, 0.12);
+        border: 1px solid rgba(34, 197, 94, 0.22);
+        color: rgba(255, 255, 255, 0.82);
+        border-radius: 18px;
+        padding: 16px;
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        line-height: 1.55;
+    }
+
+    .secure-note i {
+        color: #4ade80;
+        font-size: 20px;
+    }
+
+    .example-strip {
+        margin-top: 28px;
+    }
+
+    .example-card {
+        border: 0;
+        border-radius: 24px;
+        background: #ffffff;
+        box-shadow: 0 12px 32px rgba(15, 23, 42, 0.07);
+        height: 100%;
+    }
+
+    .example-card .card-body {
+        padding: 24px;
+    }
+
+    .example-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 16px;
+        background: #eef4ff;
+        color: #2563eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        margin-bottom: 14px;
+    }
+
+    .example-card h5 {
+        font-weight: 950;
+        color: #111827;
+        margin-bottom: 8px;
+    }
+
+    .example-card p {
+        color: #667085;
+        line-height: 1.7;
+        margin-bottom: 0;
+    }
+
+    @media (max-width: 992px) {
+        .project-page {
+            padding: 22px 16px 80px;
+        }
+
+        .project-left,
+        .project-right {
+            padding: 26px;
+        }
+
+        .steps-box {
+            grid-template-columns: 1fr;
+        }
+
+        .main-title {
+            font-size: 28px;
+        }
+
+        .side-title {
+            font-size: 26px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .title-row {
+            align-items: flex-start;
+        }
+
+        .title-icon {
+            width: 54px;
+            height: 54px;
+            font-size: 25px;
+        }
+
+        .main-title {
+            font-size: 25px;
+        }
+    }
+</style>
+
+<div class="project-page">
+
+    <div class="project-wrap">
+
+        <section class="project-hero">
+            <div class="row g-0">
+
+                <!-- LEFT FORM -->
+                <div class="col-lg-8">
+                    <div class="project-left">
+
+                        <div class="title-row">
+                            <div class="title-icon">
+                                <i class="bi bi-kanban-fill"></i>
+                            </div>
+
+                            <div>
+                                <h1 class="main-title">Project Defense Practice</h1>
+                                <p class="main-subtitle">
+                                    Prepare to explain your project clearly, confidently, and professionally.
+                                    Enter your project details and AI will ask deep technical questions.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="steps-box">
+
+                            <div class="step-card">
+                                <div class="step-no">STEP 1</div>
+                                <div class="step-title">Give your project title</div>
+                                <p class="step-text">
+                                    Use the exact title you will mention in your resume or interview.
+                                </p>
+                            </div>
+
+                            <div class="step-card">
+                                <div class="step-no">STEP 2</div>
+                                <div class="step-title">Mention technologies</div>
+                                <p class="step-text">
+                                    Add languages, frameworks, database, model, APIs, and tools.
+                                </p>
+                            </div>
+
+                            <div class="step-card">
+                                <div class="step-no">STEP 3</div>
+                                <div class="step-title">Explain implementation</div>
+                                <p class="step-text">
+                                    Describe problem, solution, features, workflow, result, and improvements.
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <form method="POST">
+                            {% csrf_token %}
+
+                            <div class="row g-4">
+
+                                <div class="col-md-6">
+                                    <label class="form-label">
+                                        Project Title <span class="required-star">*</span>
+                                    </label>
+                                    <div class="help-text">
+                                        Enter your academic, personal, or final-year project name.
+                                    </div>
+                                    <input type="text"
+                                           name="project_title"
+                                           class="form-control form-control-lg"
+                                           placeholder="e.g. Cervical Cancer Detection using CNN"
+                                           required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">
+                                        Target Role <span class="required-star">*</span>
+                                    </label>
+                                    <div class="help-text">
+                                        Choose the job role this project is related to.
+                                    </div>
+                                    <input type="text"
+                                           name="target_role"
+                                           class="form-control form-control-lg"
+                                           placeholder="e.g. AI/ML Engineer"
+                                           required>
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label">
+                                        Technologies Used <span class="required-star">*</span>
+                                    </label>
+                                    <div class="help-text">
+                                        Mention programming languages, frameworks, tools, APIs, models, and databases.
+                                    </div>
+                                    <input type="text"
+                                           name="technologies"
+                                           class="form-control form-control-lg"
+                                           placeholder="e.g. Python, Django, TensorFlow, CNN, OpenCV, SQLite"
+                                           required>
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label">
+                                        Project Description <span class="required-star">*</span>
+                                    </label>
+                                    <div class="help-text">
+                                        Explain what your project does, the problem it solves, dataset/input, workflow,
+                                        model/logic, features, final result, and what you improved.
+                                    </div>
+                                    <textarea name="project_description"
+                                              class="form-control form-control-lg"
+                                              placeholder="Example: This project detects cervical cancer cell types using image classification. Users upload cell images through a Django web app. The model analyzes the image and predicts the class. The project uses CNN, TensorFlow, OpenCV, and SQLite..."
+                                              required></textarea>
+                                </div>
+
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-success btn-lg w-100 submit-btn">
+                                        <i class="bi bi-play-fill me-1"></i>
+                                        Start Project Defense
+                                    </button>
+                                </div>
+
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+
+                <!-- RIGHT GUIDE PANEL -->
+                <div class="col-lg-4">
+                    <div class="project-right">
+
+                        <div class="side-badge">
+                            <i class="bi bi-stars"></i>
+                            AI-Guided Defense
+                        </div>
+
+                        <h2 class="side-title">
+                            What will AI ask you?
+                        </h2>
+
+                        <p class="side-text">
+                            AI will act like an interviewer and test whether you really understand your project,
+                            not just copied it from online.
+                        </p>
+
+                        <div class="question-list">
+
+                            <div class="question-item">
+                                <div class="question-icon">
+                                    <i class="bi bi-diagram-3-fill"></i>
+                                </div>
+                                <div>
+                                    <strong>Architecture & Workflow</strong>
+                                    <span>How your project works from input to final output.</span>
+                                </div>
+                            </div>
+
+                            <div class="question-item">
+                                <div class="question-icon">
+                                    <i class="bi bi-code-slash"></i>
+                                </div>
+                                <div>
+                                    <strong>Technology Decisions</strong>
+                                    <span>Why you selected Django, TensorFlow, database, or APIs.</span>
+                                </div>
+                            </div>
+
+                            <div class="question-item">
+                                <div class="question-icon">
+                                    <i class="bi bi-exclamation-triangle-fill"></i>
+                                </div>
+                                <div>
+                                    <strong>Challenges Faced</strong>
+                                    <span>Errors, limitations, dataset issues, and how you solved them.</span>
+                                </div>
+                            </div>
+
+                            <div class="question-item">
+                                <div class="question-icon">
+                                    <i class="bi bi-graph-up-arrow"></i>
+                                </div>
+                                <div>
+                                    <strong>Results & Improvements</strong>
+                                    <span>Accuracy, output, future scope, and better version ideas.</span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="secure-note">
+                            <i class="bi bi-shield-check"></i>
+                            <div>
+                                <strong>Your project details are used only for practice.</strong><br>
+                                Give clear information so the AI can ask better defense questions.
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- BELOW CARDS -->
+        <section class="example-strip">
+            <div class="row g-4">
+
+                <div class="col-md-4">
+                    <div class="card example-card">
+                        <div class="card-body">
+                            <div class="example-icon">
+                                <i class="bi bi-chat-left-text-fill"></i>
+                            </div>
+                            <h5>Practice Real Answers</h5>
+                            <p>
+                                Get project-based questions and practice answering like a real technical interview.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card example-card">
+                        <div class="card-body">
+                            <div class="example-icon">
+                                <i class="bi bi-lightbulb-fill"></i>
+                            </div>
+                            <h5>Find Weak Points</h5>
+                            <p>
+                                Understand where your explanation is weak before facing HR or technical rounds.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card example-card">
+                        <div class="card-body">
+                            <div class="example-icon">
+                                <i class="bi bi-person-check-fill"></i>
+                            </div>
+                            <h5>Build Confidence</h5>
+                            <p>
+                                Learn how to explain your project with problem, solution, tech stack, and result.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </div>
+
+</div>
+
+{% endblock body %}

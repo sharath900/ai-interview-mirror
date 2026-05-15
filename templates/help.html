@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block title %}Help | AI Interview Mirror{% endblock title %}
+
+{% block body %}
+
+<style>
+    .help-wrap { padding: 32px 0 60px; }
+    .help-card {
+        border: 0;
+        border-radius: 22px;
+        box-shadow: 0 12px 35px rgba(20, 30, 70, 0.08);
+        background: white;
+        height: 100%;
+    }
+    .help-icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 23px;
+        margin-bottom: 16px;
+    }
+</style>
+
+<div class="container help-wrap">
+
+    <div class="text-center mb-4">
+        <h2 class="fw-bold">How to Use AI Interview Mirror</h2>
+        <p class="text-muted">
+            A quick guide for placement preparation, resume analysis, project defense, and progress tracking.
+        </p>
+    </div>
+
+    <div class="row g-4">
+
+        <div class="col-md-6 col-lg-3">
+            <div class="card help-card">
+                <div class="card-body p-4">
+                    <div class="help-icon bg-primary-subtle text-primary">
+                        <i class="bi bi-file-earmark-person-fill"></i>
+                    </div>
+                    <h5 class="fw-bold">1. Upload Resume</h5>
+                    <p class="text-muted">
+                        Start with Resume Analyzer. AI finds skills, weak points, and possible questions.
+                    </p>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'resume_analyzer' %}" class="btn btn-outline-primary btn-sm">
+                            Open
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+            <div class="card help-card">
+                <div class="card-body p-4">
+                    <div class="help-icon bg-success-subtle text-success">
+                        <i class="bi bi-mic-fill"></i>
+                    </div>
+                    <h5 class="fw-bold">2. Mock Interview</h5>
+                    <p class="text-muted">
+                        Practice role-based interview questions and get score, feedback, and better answers.
+                    </p>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'start_interview' %}" class="btn btn-outline-success btn-sm">
+                            Start
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+            <div class="card help-card">
+                <div class="card-body p-4">
+                    <div class="help-icon bg-warning-subtle text-warning">
+                        <i class="bi bi-kanban-fill"></i>
+                    </div>
+                    <h5 class="fw-bold">3. Project Defense</h5>
+                    <p class="text-muted">
+                        Enter project details and practice deep technical questions from your project.
+                    </p>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'project_defense' %}" class="btn btn-outline-warning btn-sm">
+                            Practice
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+            <div class="card help-card">
+                <div class="card-body p-4">
+                    <div class="help-icon bg-danger-subtle text-danger">
+                        <i class="bi bi-graph-up-arrow"></i>
+                    </div>
+                    <h5 class="fw-bold">4. Track Progress</h5>
+                    <p class="text-muted">
+                        Use dashboard, histories, and improvement plan to understand your weak areas.
+                    </p>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'dashboard' %}" class="btn btn-outline-danger btn-sm">
+                            Dashboard
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="card help-card mt-4">
+        <div class="card-body p-4">
+
+            <h4 class="fw-bold mb-3">Recommended Practice Flow</h4>
+
+            <ol class="text-muted mb-0">
+                <li>Upload resume and read the AI analysis.</li>
+                <li>Start resume-based interview from your resume analysis.</li>
+                <li>Practice mock interviews for your target role.</li>
+                <li>Use Project Defense for your final-year projects.</li>
+                <li>Check Dashboard and Improvement Plan every week.</li>
+                <li>Use Privacy Center if you want to delete your data.</li>
+            </ol>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock body %}

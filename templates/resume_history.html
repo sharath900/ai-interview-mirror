@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}Resume History | AI Interview Mirror{% endblock title %}
+
+{% block body %}
+
+<style>
+    .history-wrap {
+        padding: 32px 0 60px;
+    }
+
+    .history-card {
+        border: 0;
+        border-radius: 22px;
+        box-shadow: 0 12px 35px rgba(20, 30, 70, 0.08);
+        background: white;
+        height: 100%;
+    }
+</style>
+
+<div class="container history-wrap">
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Resume History</h2>
+            <p class="text-muted mb-0">
+                View previous resume analyses and start resume-based interviews again.
+            </p>
+        </div>
+
+        <a href="{% url 'resume_analyzer' %}" class="btn btn-primary">
+            <i class="bi bi-upload me-1"></i>
+            Upload New Resume
+        </a>
+    </div>
+
+    {% if resumes %}
+
+        <div class="row g-4">
+
+            {% for resume in resumes %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card history-card">
+                        <div class="card-body p-4">
+
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div>
+                                    <h5 class="fw-bold mb-1">Resume Analysis #{{ resume.id }}</h5>
+                                    <p class="text-muted small mb-0">
+                                        {{ resume.created_at|date:"d M Y, h:i A" }}
+                                    </p>
+                                </div>
+
+                                <i class="bi bi-file-earmark-person-fill text-primary fs-3"></i>
+                            </div>
+
+                            <p class="text-muted small">
+                                <strong>File:</strong> {{ resume.resume_file.name|truncatechars:45 }}
+                            </p>
+
+                            <div class="d-flex flex-wrap gap-2 mt-3">
+                                <a href="{% url 'resume_detail' resume.id %}" class="btn btn-outline-primary btn-sm">
+                                    View Analysis
+                                </a>
+
+                                <a href="{% url 'start_resume_interview' resume.id %}" class="btn btn-success btn-sm">
+                                    Start Interview
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="card history-card">
+            <div class="card-body p-5 text-center">
+                <i class="bi bi-file-earmark-x fs-1 text-muted"></i>
+                <h4 class="fw-bold mt-3">No Resume Analyses Yet</h4>
+                <p class="text-muted">
+                    Upload your resume first. AI analysis will be saved here.
+                </p>
+                <a href="{% url 'resume_analyzer' %}" class="btn btn-primary">
+                    Upload Resume
+                </a>
+            </div>
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock body %}

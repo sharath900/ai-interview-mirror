@@ -1,0 +1,773 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Resume Analyzer | SYNAPTO{% endblock title %}
+
+{% block body %}
+
+<style>
+    .resume-page {
+        padding: 30px 24px 120px;
+    }
+
+    .page-wrap {
+        max-width: 1240px;
+        margin: 0 auto;
+    }
+
+    .resume-hero {
+        border-radius: 30px;
+        overflow: hidden;
+        background: #ffffff;
+        box-shadow: 0 20px 55px rgba(15, 23, 42, 0.10);
+        margin-bottom: 28px;
+    }
+
+    .upload-panel {
+        padding: 36px;
+        height: 100%;
+    }
+
+    .page-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #eef4ff;
+        color: #2563eb;
+        border: 1px solid #dbeafe;
+        padding: 9px 15px;
+        border-radius: 999px;
+        font-weight: 800;
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+
+    .hero-title {
+        font-size: 42px;
+        font-weight: 950;
+        line-height: 1.1;
+        color: #111827;
+        letter-spacing: -1px;
+        margin-bottom: 14px;
+    }
+
+    .hero-text {
+        color: #667085;
+        font-size: 16.5px;
+        line-height: 1.75;
+        margin-bottom: 24px;
+    }
+
+    .privacy-box {
+        background: #f8fafc;
+        border: 1px solid #e7ecf3;
+        border-radius: 18px;
+        padding: 15px;
+        color: #475467;
+        line-height: 1.6;
+        margin-bottom: 22px;
+    }
+
+    .upload-box {
+        border: 1px dashed #b9c4d5;
+        background: #f8fbff;
+        border-radius: 22px;
+        padding: 22px;
+        margin-bottom: 18px;
+    }
+
+    .form-label {
+        font-weight: 800;
+        color: #344054;
+    }
+
+    .form-control {
+        border-radius: 15px;
+        border: 1px solid #d0d5dd;
+        padding: 12px 14px;
+    }
+
+    .form-control:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.10);
+    }
+
+    .main-btn {
+        border-radius: 15px;
+        padding: 13px 18px;
+        font-weight: 850;
+        background: linear-gradient(135deg, #2563eb, #6d5dfc);
+        border: none;
+    }
+
+    .secondary-btn {
+        border-radius: 15px;
+        padding: 12px 18px;
+        font-weight: 800;
+    }
+
+    .mini-checks {
+        display: grid;
+        gap: 12px;
+        margin-top: 22px;
+    }
+
+    .mini-check {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #475467;
+        font-weight: 650;
+        font-size: 15px;
+    }
+
+    .mini-check i {
+        color: #16a34a;
+    }
+
+    /* RIGHT IMAGE SIDE */
+    .resume-visual {
+        min-height: 590px;
+        height: 100%;
+        position: relative;
+        background-image:
+            linear-gradient(
+                90deg,
+                rgba(15, 23, 42, 0.10) 0%,
+                rgba(15, 23, 42, 0.04) 38%,
+                rgba(15, 23, 42, 0.00) 100%
+            ),
+            url("{% static 'img/resume-analyzer-bg.png' %}");
+        background-size: cover;
+        background-position: center right;
+        background-repeat: no-repeat;
+    }
+
+    .visual-glass-card {
+        position: absolute;
+        left: 24px;
+        bottom: 24px;
+        width: 310px;
+        background: rgba(255, 255, 255, 0.94);
+        border: 1px solid rgba(255, 255, 255, 0.70);
+        border-radius: 24px;
+        padding: 20px;
+        box-shadow: 0 18px 45px rgba(15, 23, 42, 0.16);
+        backdrop-filter: blur(10px);
+    }
+
+    .score-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 14px;
+    }
+
+    .score-title {
+        font-weight: 950;
+        color: #111827;
+        margin-bottom: 2px;
+    }
+
+    .score-subtitle {
+        color: #667085;
+        font-size: 13px;
+    }
+
+    .score-circle {
+        width: 62px;
+        height: 62px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #2563eb, #6d5dfc);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 950;
+        font-size: 18px;
+    }
+
+    .progress-line {
+        height: 8px;
+        border-radius: 999px;
+        background: #e5e7eb;
+        overflow: hidden;
+        margin-bottom: 14px;
+    }
+
+    .progress-line span {
+        display: block;
+        height: 100%;
+        width: 78%;
+        background: linear-gradient(90deg, #16a34a, #2563eb);
+    }
+
+    .glass-items {
+        display: grid;
+        gap: 9px;
+    }
+
+    .glass-item {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        color: #475467;
+        font-size: 14px;
+        font-weight: 650;
+    }
+
+    .glass-item i {
+        color: #16a34a;
+    }
+
+    .resume-float-card {
+        position: absolute;
+        right: 28px;
+        top: 28px;
+        width: 215px;
+        background: rgba(255, 255, 255, 0.94);
+        border-radius: 22px;
+        padding: 16px;
+        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.14);
+        backdrop-filter: blur(10px);
+    }
+
+    .resume-mini-head {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 13px;
+    }
+
+    .resume-mini-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 14px;
+        background: #eef4ff;
+        color: #2563eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 21px;
+    }
+
+    .resume-mini-title {
+        font-weight: 950;
+        color: #111827;
+        font-size: 14px;
+    }
+
+    .resume-mini-sub {
+        color: #667085;
+        font-size: 12px;
+    }
+
+    .doc-line {
+        height: 7px;
+        background: #e5e7eb;
+        border-radius: 999px;
+        margin-bottom: 8px;
+    }
+
+    .doc-line.long {
+        width: 100%;
+    }
+
+    .doc-line.medium {
+        width: 78%;
+    }
+
+    .doc-line.short {
+        width: 58%;
+    }
+
+    .skill-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+        margin-top: 13px;
+    }
+
+    .skill-chip {
+        background: #eef4ff;
+        color: #2563eb;
+        font-size: 11px;
+        padding: 5px 8px;
+        border-radius: 999px;
+        font-weight: 800;
+    }
+
+    /* BEFORE ANALYSIS BELOW SECTION */
+    .feature-strip {
+        margin-top: 28px;
+    }
+
+    .feature-card {
+        border: 0;
+        border-radius: 24px;
+        background: #ffffff;
+        box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+        height: 100%;
+    }
+
+    .feature-card .card-body {
+        padding: 24px;
+    }
+
+    .feature-icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 17px;
+        background: #eef4ff;
+        color: #2563eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 23px;
+        margin-bottom: 16px;
+    }
+
+    .feature-card h5 {
+        font-weight: 950;
+        color: #111827;
+        margin-bottom: 8px;
+    }
+
+    .feature-card p {
+        color: #667085;
+        line-height: 1.7;
+        margin-bottom: 0;
+    }
+
+    /* AFTER ANALYSIS */
+    .analysis-card {
+        border: 0;
+        border-radius: 28px;
+        box-shadow: 0 18px 45px rgba(15, 23, 42, 0.10);
+        background: #ffffff;
+        margin-bottom: 26px;
+    }
+
+    .analysis-card .card-body {
+        padding: 28px;
+    }
+
+    .analysis-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-bottom: 18px;
+    }
+
+    .analysis-title-wrap {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .analysis-icon {
+        width: 54px;
+        height: 54px;
+        border-radius: 18px;
+        background: #eef4ff;
+        color: #2563eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 25px;
+        flex-shrink: 0;
+    }
+
+    .analysis-title {
+        font-weight: 950;
+        color: #111827;
+        margin-bottom: 4px;
+    }
+
+    .analysis-subtitle {
+        color: #667085;
+        margin-bottom: 0;
+    }
+
+    .result-note {
+        background: #f1f6ff;
+        border: 1px solid #dbeafe;
+        border-radius: 18px;
+        padding: 14px 16px;
+        color: #315777;
+        font-size: 14px;
+        line-height: 1.6;
+        margin-bottom: 22px;
+    }
+
+    .result-section-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 950;
+        color: #111827;
+        margin-bottom: 12px;
+    }
+
+    .result-box {
+        background: #f8fafc;
+        border: 1px solid #edf0f5;
+        border-radius: 18px;
+        padding: 18px;
+        line-height: 1.75;
+        overflow-y: auto;
+        overflow-x: hidden;
+        word-break: break-word;
+        overflow-wrap: anywhere;
+    }
+
+    .ai-result-box {
+        max-height: 370px;
+        min-height: 260px;
+    }
+
+    .extracted-result-box {
+        max-height: 230px;
+        min-height: 170px;
+    }
+
+    .result-box p {
+        margin-bottom: 10px;
+    }
+
+    @media (max-width: 1200px) {
+        .hero-title {
+            font-size: 36px;
+        }
+
+        .resume-visual {
+            min-height: 540px;
+        }
+
+        .resume-float-card {
+            display: none;
+        }
+    }
+
+    @media (max-width: 992px) {
+        .resume-page {
+            padding: 22px 16px 90px;
+        }
+
+        .upload-panel {
+            padding: 28px;
+        }
+
+        .resume-visual {
+            min-height: 460px;
+            background-position: center right;
+        }
+
+        .visual-glass-card {
+            width: calc(100% - 40px);
+            left: 20px;
+            right: 20px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .upload-panel {
+            padding: 24px;
+        }
+
+        .hero-title {
+            font-size: 30px;
+        }
+
+        .resume-visual {
+            min-height: 390px;
+        }
+
+        .visual-glass-card {
+            display: none;
+        }
+
+        .analysis-card .card-body {
+            padding: 22px;
+        }
+    }
+</style>
+
+<div class="resume-page">
+    <div class="page-wrap">
+
+        {% if analysis %}
+
+            <!-- AFTER ANALYSIS RESULT -->
+            <div class="analysis-card">
+                <div class="card-body">
+
+                    <div class="analysis-header">
+
+                        <div class="analysis-title-wrap">
+                            <div class="analysis-icon">
+                                <i class="bi bi-robot"></i>
+                            </div>
+
+                            <div>
+                                <h3 class="analysis-title">AI Resume Analysis</h3>
+                                <p class="analysis-subtitle">
+                                    Review your feedback, weak areas, and interview readiness.
+                                </p>
+                            </div>
+                        </div>
+
+                        <a href="{% url 'start_resume_interview' analysis.id %}" class="btn btn-success secondary-btn">
+                            <i class="bi bi-mic-fill me-1"></i>
+                            Start Resume Interview
+                        </a>
+
+                    </div>
+
+                    <div class="result-note">
+                        <strong>Tip:</strong>
+                        Improve your resume using this feedback. After that, practice resume-based interview questions.
+                    </div>
+
+                    <div class="row g-4">
+
+                        <div class="col-lg-7">
+                            <h5 class="result-section-title">
+                                <i class="bi bi-stars text-primary"></i>
+                                AI Feedback
+                            </h5>
+
+                            <div class="result-box ai-result-box">
+                                {{ analysis.ai_analysis|linebreaks }}
+                            </div>
+                        </div>
+
+                        <div class="col-lg-5">
+                            <h5 class="result-section-title">
+                                <i class="bi bi-text-left"></i>
+                                Extracted Resume Text
+                            </h5>
+
+                            <div class="result-box extracted-result-box">
+                                {{ analysis.extracted_text|linebreaks }}
+                            </div>
+
+                            <div class="mt-3 d-grid gap-2">
+                                <a href="{% url 'resume_history' %}" class="btn btn-outline-dark secondary-btn">
+                                    <i class="bi bi-clock-history me-1"></i>
+                                    View Resume History
+                                </a>
+
+                                <a href="{% url 'resume_analyzer' %}" class="btn btn-primary secondary-btn">
+                                    <i class="bi bi-upload me-1"></i>
+                                    Analyze Another Resume
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        {% else %}
+
+            <!-- BEFORE ANALYSIS HERO -->
+            <section class="resume-hero">
+                <div class="row g-0 align-items-stretch">
+
+                    <!-- LEFT: Upload Form -->
+                    <div class="col-lg-5">
+                        <div class="upload-panel">
+
+                            <div class="page-badge">
+                                <i class="bi bi-file-earmark-person-fill"></i>
+                                AI Resume Analyzer
+                            </div>
+
+                            <h1 class="hero-title">
+                                Build a resume that gets noticed.
+                            </h1>
+
+                            <p class="hero-text">
+                                Upload your resume and SYNAPTO will check your skills, projects,
+                                weak areas, missing details, and interview readiness.
+                            </p>
+
+                            <div class="privacy-box">
+                                <strong>Privacy:</strong>
+                                Your resume may contain personal details. Upload only if you are comfortable.
+                            </div>
+
+                            <form method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+
+                                <div class="upload-box">
+                                    <label class="form-label">Upload Resume PDF</label>
+                                    <input type="file"
+                                           class="form-control form-control-lg"
+                                           name="resume_file"
+                                           accept=".pdf"
+                                           required>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary btn-lg w-100 main-btn">
+                                    <i class="bi bi-stars me-1"></i>
+                                    Analyze Resume
+                                </button>
+                            </form>
+
+                            <div class="mt-3">
+                                <a href="{% url 'resume_history' %}" class="btn btn-outline-dark w-100 secondary-btn">
+                                    <i class="bi bi-clock-history me-1"></i>
+                                    View Resume History
+                                </a>
+                            </div>
+
+                            <div class="mini-checks">
+                                <div class="mini-check">
+                                    <i class="bi bi-check-circle-fill"></i>
+                                    Skills and technologies review
+                                </div>
+
+                                <div class="mini-check">
+                                    <i class="bi bi-check-circle-fill"></i>
+                                    Project explanation improvement
+                                </div>
+
+                                <div class="mini-check">
+                                    <i class="bi bi-check-circle-fill"></i>
+                                    Resume-based interview questions
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- RIGHT: Real image visual -->
+                    <div class="col-lg-7">
+                        <div class="resume-visual">
+
+                            <div class="resume-float-card">
+                                <div class="resume-mini-head">
+                                    <div class="resume-mini-icon">
+                                        <i class="bi bi-file-earmark-text-fill"></i>
+                                    </div>
+                                    <div>
+                                        <div class="resume-mini-title">Resume Preview</div>
+                                        <div class="resume-mini-sub">AI checks structure</div>
+                                    </div>
+                                </div>
+
+                                <div class="doc-line long"></div>
+                                <div class="doc-line medium"></div>
+                                <div class="doc-line short"></div>
+
+                                <div class="skill-row">
+                                    <span class="skill-chip">Python</span>
+                                    <span class="skill-chip">Django</span>
+                                    <span class="skill-chip">ML</span>
+                                    <span class="skill-chip">SQL</span>
+                                </div>
+                            </div>
+
+                            <div class="visual-glass-card">
+                                <div class="score-top">
+                                    <div>
+                                        <div class="score-title">Resume Score</div>
+                                        <div class="score-subtitle">Before interview practice</div>
+                                    </div>
+
+                                    <div class="score-circle">
+                                        78%
+                                    </div>
+                                </div>
+
+                                <div class="progress-line">
+                                    <span></span>
+                                </div>
+
+                                <div class="glass-items">
+                                    <div class="glass-item">
+                                        <i class="bi bi-check-circle-fill"></i>
+                                        Strengths and weak areas
+                                    </div>
+
+                                    <div class="glass-item">
+                                        <i class="bi bi-check-circle-fill"></i>
+                                        Missing resume sections
+                                    </div>
+
+                                    <div class="glass-item">
+                                        <i class="bi bi-check-circle-fill"></i>
+                                        Better project explanation
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- FEATURE STRIP -->
+            <section class="feature-strip">
+                <div class="row g-4">
+
+                    <div class="col-md-4">
+                        <div class="card feature-card">
+                            <div class="card-body">
+                                <div class="feature-icon">
+                                    <i class="bi bi-search-heart-fill"></i>
+                                </div>
+
+                                <h5>Find Weak Areas</h5>
+                                <p>
+                                    Understand what is missing in your resume and where it needs improvement.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card feature-card">
+                            <div class="card-body">
+                                <div class="feature-icon">
+                                    <i class="bi bi-kanban-fill"></i>
+                                </div>
+
+                                <h5>Improve Projects</h5>
+                                <p>
+                                    Learn how to explain your projects clearly for HR and technical interviews.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card feature-card">
+                            <div class="card-body">
+                                <div class="feature-icon">
+                                    <i class="bi bi-mic-fill"></i>
+                                </div>
+
+                                <h5>Practice Interview</h5>
+                                <p>
+                                    Start a resume-based interview after analysis and practice real questions.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock body %}
