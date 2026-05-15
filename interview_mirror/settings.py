@@ -68,8 +68,9 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
 ]
-SITE_ID = 3
 
+
+SITE_ID = int(os.environ.get("SITE_ID", "1"))
 AUTHENTICATION_BACKENDS = [
     # Default Django login
     'django.contrib.auth.backends.ModelBackend',
