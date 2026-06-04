@@ -10,9 +10,15 @@
 
 ---
 
+## 🎯 Live Demo
+
+**Try it now:** [https://ai-interview-mirror.onrender.com/](https://ai-interview-mirror.onrender.com/)
+
+---
+
 ## 📋 Overview
 
-**AI Interview Mirror** is a comprehensive placement preparation platform that helps engineering students ace their interviews. It combines AI-powered analysis with personalized practice tools to boost interview confidence and placement readiness.
+**AI Interview Mirror** is a comprehensive placement preparation platform that helps engineering students ace their interviews. It combines AI-powered analysis with personalized practice tools to prepare for technical and HR interviews.
 
 **Perfect for:**
 - 📚 Students preparing for placements
