@@ -113,10 +113,10 @@ WSGI_APPLICATION = 'interview_mirror.wsgi.application'
 # Database
 
 DATABASES = {
-    "default": dj_database_url.config(
-        default=f"postgres://postgres:{os.environ.get('LOCAL_DB_PASSWORD', '')}@localhost:5432/synapto_db",
-        conn_max_age=600,
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
 # Password validation
